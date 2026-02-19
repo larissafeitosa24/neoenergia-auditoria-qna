@@ -319,7 +319,7 @@ logo_bytes = load_logo(LOGO_URL)
 if logo_bytes:
     st.image(logo_bytes, width=180)
 
-st.title("📗 Q&A Enterprise Neoenergia (100% Automático)")
+st.title("📗 Consulta Relatórios de Auditoria")
 
 # ===========================================================
 # Filtros (substituídos)
@@ -1021,3 +1021,4 @@ with col4:
     if st.button("⬇️ Exportar Word detalhado", disabled=(last_results is None)):
         docxd = export_docx_detailed(df_h, df_f, last_results, logo_bytes=logo_bytes)
         st.download_button("Baixar DOCX detalhado", docxd, "neoenergia_qa_detalhado.docx")
+
