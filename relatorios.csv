@@ -1,0 +1,820 @@
+"aud_code","title","report_type","company","emission_date","objetivo","risco_processo","escopo","alcance","cronograma_inicio","cronograma_draft","cronograma_final","classification","source_s3_uri","ingestion_ts","ano","mes"
+"AUD-1794409","Internal Use Resiliência em TI e TO","Relatório Final","Neoenergia S/A","2025-12-30","Avaliar a estratégia e estrutura de resiliência corporativa, os planos e testes de
+recuperação de ativos e o processo de gestão de crises quando de incidentes
+críticos.","Interrupção nos Serviços
+Indisponibilidades
+Descontinuidade do Negócio","▪
+Governança de Resiliência Corporativa
+▪
+Plano de Recuperação de Ativos
+▪
+Gestão de Crises","Superintendência de Segurança e Resiliência Corporativa
+Diretoria de Processos e Tecnologia
+Diretoria de Sistemas
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles",,"2025-12-16","2025-12-30","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório de Auditoria Interna - Resiliência em TI e TO-Redes.json","2026-02-13T18:32:10.703473+00:00","2025","12"
+"AUD-1794381","Follow Up Parcelamento e Troca de Titularidade","Relatório Final","Neoenergia Pernambuco","2025-09-10","Verificar o cumprimento dos procedimentos estabelecidos para o parcelamento de 
+débitos de energia, bem como ao processo de troca de titularidade.","Aumento do contas a receber/ inadimplência.","▪
+Objetivo 1: Follow-up das recomendações do trabalho de Parcelamento de Débito
+realizado em 2024: Analisar efetividade das recomendações sugeridas nos trabalhos,
+reperformando os controles e validando evidências atuais quando necessário.
+▪
+Objetivo
+2:
+Analisar
+as
+execuções
+e
+efetividade
+dos
+Controles
+Internos
+implementados no processo de Parcelamento de Débito e troca de titularidade:
+Avaliar as últimas 3 execuções dos Controles e seus respectivos desenhos.","Distribuidoras Neoenergia - Período: Base período de Junho/2024 a Abril/2025.
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles.","2025-05-19","2025-08-05","2025-09-10","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final de Auditoria Interna - Follow Up Parcelamento e Troca de Titularidade - NPER.json","2026-02-13T18:32:09.350778+00:00","2025","09"
+"AUD-1464317","Processo de Arrecadação","Relatório Final","Neoenergia Cosern","2024-12-18","Perda financeira e menor fluxo de caixa","
+Avaliar os controles do processamento de arrecadação de faturamento
+
+Avaliar o processo de conciliação e registro contábil da arrecadação","Julho a Setembro/2024","18/12/2024
+Relatório
+Final
+16/12/2024
+Draft
+emitido
+01/10/2024
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Processo Arrecadação - Neo Cosern.json","2026-02-13T18:31:58.113059+00:00","2024","12"
+"AUD-1794379","Gestão e Recuperação de Perdas","Relatório Final","Neoenergia Coelba","2025-12-22","Não atendimento dos riscos/metas regulatórias.","
+Avaliar a sistemática de cálculo de perdas para as distribuidoras do Grupo, quanto à
+automação, variáveis consideradas e expurgos.
+
+Recalcular o Índice de Perdas e consistência das suas principais variáveis.","Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Elektro,
+Neoenergia Brasília.","22/12/2025
+Relatório
+Final
+28/11/2025
+Draft
+emitido
+20/07/2025
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório - Gestão e recuperação de perdas - NEO COELBA.json","2026-02-13T18:31:54.837469+00:00","2025","12"
+"AUD-1794317","AUDITORIA INTERNA TESTE SEMESTRAL SCIIF 1º semestre 2025","Relatório Final",,"2025-07-18","Unidades organizacionais: Diretoria Executiva de Controle Patrimonial e Planejamento.
+Período auditado: Janeiro a Junho de 2025
+Revisar a efetiva execução e documentação dos controles classificados com risco residual alto e controles
+considerados críticos pela Auditoria Interna na ferramenta de controles internos;
+Conclusão dos demais controles associados ao processo de elaboração da Informação Econômico
+Financeira em 30 de Junho de 2025.
+Data de extração da matriz: 16/06/2025.",,,,,,,,"s3://auditneo/raw/rel/head/year=2025/Relatório Final - SCIIF Semestral 1S2025.json","2026-02-13T18:32:06.922673+00:00","2025","07"
+"AUD-1794341","Metas ESG Draft de Relatório Neoenergia","Relatório Final","Neoenergia","2025-02-20","Avaliar a estruturação do processo de registro e monitoramento dos objetivos/metas 
+ESG do grupo.","Fragilidade reputacional pelo não atingimento dos objetivos reportados ao mercado.","▪
+Objetivo 1: Validar os resultados e metodologias dos cálculos dos objetivos ESG
+corporativos reportados ao mercado.","2024","2025-01-08","2025-02-11","2025-02-20","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final de Auditoria Interna - Metas ESG.json","2026-02-13T18:32:09.771213+00:00","2025","02"
+"AUD-1794367","Gestão de Operação e Manutenção","Relatório Final","Transmissão","2025-12-05","Avaliar a estrutura e controles implementados na gestão das linhas de transmissão em 
+operação, considerando os requisitos regulatórios, disponibilidade do sistema e 
+ferramentas utilizadas.","Penalidades regulatórias e impacto financeiro.","•
+Avaliar a eficácia dos controles para mitigar os impactos financeiros de descontos na
+RAP
+por
+indisponibilidade,
+restrições
+operativas
+de
+equipamentos,
+atrasos
+e
+cancelamentos de intervenções.
+•
+Avaliar a efetividade do processo de apuração, contestação e reconciliação da
+Parcela Variável.","Janeiro a Outubro/2025.
+Serão avaliadas as FTs que tiveram impacto em Parcelas Variáveis no período.","2025-10-27","2025-12-01","2025-12-05","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final Gestão de Operação e Manutenção.json","2026-02-13T18:32:07.749584+00:00","2025","12"
+"AUD-1794381","Follow Up Parcelamento e Troca de Titularidade","Relatório Final","Neoenergia Elektro","2025-09-10","Verificar o cumprimento dos procedimentos estabelecidos para o parcelamento de 
+débitos de energia, bem como ao processo de troca de titularidade.","Aumento do contas a receber/ inadimplência.","▪
+Objetivo 1: Follow-up das recomendações do trabalho de Parcelamento de Débito
+realizado em 2024: Analisar efetividade das recomendações sugeridas nos trabalhos,
+reperformando os controles e validando evidências atuais quando necessário.
+▪
+Objetivo
+2:
+Analisar
+as
+execuções
+e
+efetividade
+dos
+Controles
+Internos
+implementados no processo de Parcelamento de Débito e troca de titularidade:
+Avaliar as últimas 3 execuções dos Controles e seus respectivos desenhos.","Distribuidoras Neoenergia - Período: Base período de Junho/2024 a Abril/2025.
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles.","2025-05-19","2025-08-05","2025-09-10","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final de Auditoria Interna - Follow Up Parcelamento e Troca de Titularidade - NEKT.json","2026-02-13T18:32:09.172204+00:00","2025","09"
+"AUD-1794349","Conformidade Ambiental Distribuição","Relatório Final","Neoenergia Cosern","2025-06-16","Verificar o cumprimento das legislações ambientais e condicionantes.","Não obtenção, suspensão ou cancelamento das licenças ambientais.","▪
+Avaliar o rito do processo de licenciamento, autorização e anuência ambiental para
+construções
+e
+alterações
+de
+redes
+e
+subestações
+de
+distribuição,
+linhas
+e
+subestações de subtransmissão
+▪
+Avaliar os mecanismos de controles adotados para cumprimento das condicionantes
+ambientais","Projetos licenciados em 2024 e posição de projetos remanescente em dezembro de
+2024.","2025-02-17","2025-06-02","2025-06-16","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatorio Final de Auditoria - CAD - NCSR.json","2026-02-13T18:32:03.701081+00:00","2025","06"
+"AUD-1794349","Conformidade Ambiental Distribuição","Relatório Final","Neoenergia Pernambuco","2025-06-16","Verificar o cumprimento das legislações ambientais e condicionantes.","Não obtenção, suspensão ou cancelamento das licenças ambientais.","▪
+Avaliar o rito do processo de licenciamento, autorização e anuência ambiental para
+construções
+e
+alterações
+de
+redes
+e
+subestações
+de
+distribuição,
+linhas
+e
+subestações de subtransmissão
+▪
+Avaliar os mecanismos de controles adotados para cumprimento das condicionantes
+ambientais","Projetos licenciados em 2024 e posição de projetos remanescente em dezembro de
+2024.","2025-02-17","2025-06-02","2025-06-16","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatorio Final de Auditoria - CAD - NPER.json","2026-02-13T18:32:04.069715+00:00","2025","06"
+"AUD-1794391","Gestão de Contratos de Manutenção - Eólica","Relatório Final",,"2025-09-30","Avaliar a adequação dos controles para cumprimento dos contratos de manutenção.","Falhas
+operacionais
+por
+descumprimentos
+de
+condições
+contratuais
+pelos
+fornecedores","▪
+Avaliar o cumprimento das condições contratuais;
+▪
+Avaliar a adequação dos pagamentos.","Contratos vigentes em junho/2025 e base de pagamentos e gestão das atividades do
+período de janeiro a junho/25.
+Serão avaliados os aspectos de Gerenciamento de Riscos e Controles","2025-07-10","2025-09-22","2025-09-30","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório  Final - Gestão de Contratos de Manutenção.json","2026-02-13T18:32:04.231896+00:00","2025","09"
+"AUD-1794319","AUDITORIA INTERNA TESTE SEMESTRAL SCIIF 2º semestre 2024","Relatório Final",,"2025-02-20","Unidades organizacionais: Diretoria Executiva de Controle Patrimonial e Planejamento.
+Período auditado: Junho a Dezembro de 2024
+Revisar a efetiva execução e documentação dos controles classificados com risco residual alto e controles
+considerados críticos pela Auditoria Interna na ferramenta de controles internos;
+Conclusão dos demais controles associados ao processo de elaboração da Informação Econômico
+Financeira em 31 de Dezembro de 2024.
+Data de extração da matriz: 17/12/2024.",,,,,,,,"s3://auditneo/raw/rel/head/year=2025/Relatório Final - SCIIF Semestral 2H2024.json","2026-02-13T18:32:07.126677+00:00","2025","02"
+"AUD-1794349","Incentivo SUDENE","Relatório Final",,"2025-05-30","Validar a estrutura e consistência do cálculo de incentivos SUDENE para as empresas do 
+Nordeste.","Penalidades fiscais e inconsistência das informações financeiras.","Validar o adequado cálculo e registro dos incentivos SUDENE","Corporativo – Todas as empresas que tenham o benefício SUDENE","2025-02-24","2025-05-22","2025-05-30","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final - Incentivos SUDENE.json","2026-02-13T18:32:06.115983+00:00","2025","05"
+"AUD-1464308","Processo de Faturamento","Relatório Final","Neoenergia Cosern","2024-10-01","▪
+Avaliar a adequação do processo de Faturamento do Grupo A e B, a interface dos
+sistemas e respectivos recálculos;
+▪
+Verificar o cumprimento dos procedimentos quanto as retificações (refaturamento) de
+faturas definidos.","Perda financeira e imagem.","▪
+Avaliar a adequação dos procedimentos de faturamento dos grupos A e B.
+▪
+Verificar o cumprimento dos procedimentos e controle quanto as retificações das
+faturas.","Janeiro a Maio/2024.",,"2024-09-12","2024-10-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatorio Final de Auditoria - Processo de Faturamento NCSR.json","2026-02-13T18:31:54.041882+00:00","2024","10"
+"AUD-1464308","Processo de Faturamento","Relatório Final","Neoenergia Coelba","2024-10-01","▪
+Avaliar a adequação do processo de Faturamento do Grupo A e B, a interface dos
+sistemas e respectivos recálculos;
+▪
+Verificar o cumprimento dos procedimentos quanto as retificações (refaturamento) de
+faturas definidos.","Perda financeira e imagem.","▪
+Avaliar a adequação dos procedimentos de faturamento dos grupos A e B.
+▪
+Verificar o cumprimento dos procedimentos e controle quanto as retificações das
+faturas.","Janeiro a Maio/2024.",,"2024-09-12","2024-10-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatorio Final de Auditoria - Processo de Faturamento NCLB.json","2026-02-13T18:31:53.854595+00:00","2024","10"
+"AUD-1464310","Parcelamento de Débitos","Relatório Final","Neoenergia Elektro","2024-07-03",,"A","Ɩ Verificar o cumprimento dos procedimentos estabelecidos para o parcelamento de 
+débitos de energia e troca de titularidade;","Janeiro a Dezembro de 2023.",,"2024-06-24","2024-07-03",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final de Auditoria - Parcelamento de Débitos - Neoenergia Elektro.json","2026-02-13T18:32:01.376230+00:00","2024","07"
+"AUD-1464329","Programa de Manutenção Eólica e Solar","Relatório Final",,"2024-08-09","•
+Verificar o cumprimento do programa de manutenção preventiva e atuação nas 
+manutenções corretivas.
+•
+Verificar a adequação do cálculo do índice de disponibilidade dos parques eólicos e 
+usinas fotovoltaicas.","Indisponibilidade dos parques eólicos e fotovoltaicos","
+Verificar o cumprimento do programa de manutenção preventiva e atuação nas 
+manutenções corretivas;
+
+Verificar a adequação do cálculo do índice de disponibilidade dos parques eólicos e 
+usinas fotovoltaicas.","Parques eólicos e usinas fotovoltaicas Grupo Neoenergia em maio/2024.","2024-05-01","2024-08-09","2024-09-06","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Manutenção Eólica e Solar.json","2026-02-13T18:31:57.441461+00:00","2024","08"
+"AUD-1794349","Conformidade Ambiental Distribuição","Relatório Final","Neoenergia Elektro","2025-06-16","Verificar o cumprimento das legislações ambientais e condicionantes.","Não obtenção, suspensão ou cancelamento das licenças ambientais.","▪
+Avaliar o rito do processo de licenciamento, autorização e anuência ambiental para
+construções
+e
+alterações
+de
+redes
+e
+subestações
+de
+distribuição,
+linhas
+e
+subestações de subtransmissão
+▪
+Avaliar os mecanismos de controles adotados para cumprimento das condicionantes
+ambientais","Projetos licenciados em 2024 e posição de projetos remanescente em dezembro de
+2024.","2025-02-17","2025-06-02","2025-06-16","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatorio Final de Auditoria - CAD - NEKT.json","2026-02-13T18:32:03.877959+00:00","2025","06"
+"AUD-1464317","Processo de Arrecadação","Relatório Final","Neoenergia Coelba","2024-12-18","Perda financeira e menor fluxo de caixa","
+Avaliar os controles do processamento de arrecadação de faturamento
+
+Avaliar o processo de conciliação e registro contábil da arrecadação","Julho a Setembro/2024","18/12/2024
+Relatório
+Final
+16/12/2024
+Draft
+emitido
+01/10/2024
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Processo Arrecadação - Neo Coelba.json","2026-02-13T18:31:57.937411+00:00","2024","12"
+"AUD-1794381","Follow Up Parcelamento e Troca de Titularidade","Relatório Final","Neoenergia Cosern","2025-09-10","Verificar o cumprimento dos procedimentos estabelecidos para o parcelamento de 
+débitos de energia, bem como ao processo de troca de titularidade.","Aumento do contas a receber/ inadimplência.","▪
+Objetivo 1: Follow-up das recomendações do trabalho de Parcelamento de Débito
+realizado em 2024: Analisar efetividade das recomendações sugeridas nos trabalhos,
+reperformando os controles e validando evidências atuais quando necessário.
+▪
+Objetivo
+2:
+Analisar
+as
+execuções
+e
+efetividade
+dos
+Controles
+Internos
+implementados no processo de Parcelamento de Débito e troca de titularidade:
+Avaliar as últimas 3 execuções dos Controles e seus respectivos desenhos.","Distribuidoras Neoenergia - Período: Base período de Junho/2024 a Abril/2025.
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles.","2025-05-19","2025-08-05","2025-09-10","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final de Auditoria Interna - Follow Up Parcelamento e Troca de Titularidade - NCSR.json","2026-02-13T18:32:08.995083+00:00","2025","09"
+"AUD-1464317","Processo de Arrecadação","Relatório Final","Neoenergia Elektro","2024-12-18","Perda financeira e menor fluxo de caixa","
+Avaliar os controles do processamento de arrecadação de faturamento
+
+Avaliar o processo de conciliação e registro contábil da arrecadação","Julho a Setembro/2024","18/12/2024
+Relatório
+Final
+16/12/2024
+Draft
+emitido
+01/10/2024
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Processo Arrecadação - Neo Elektro.json","2026-02-13T18:31:58.268348+00:00","2024","12"
+"AUD-1464312","Gestão de Contratos","Relatório Final","Neoenergia Cosern","2024-10-21","Avaliar os controles sobre o gerenciamento de contratos de serviços e materiais dos 
+principais fornecedores, cumprimento das obrigações e leis trabalhistas.","Gestão dos contratos em desacordo com as premissas da Companhia.","
+Verificar a existência de pagamentos indevidos ou incorretos;
+
+Verificar a existência de pagamentos em desacordo com as premissas contratuais;
+
+Verificar a existência e composição dos aditivos contratuais.","Janeiro a Abril de 2024.","2024-05-17","2024-09-24","2024-10-21","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Gestão de Contratos - Neoenergia Cosern.json","2026-02-13T18:31:56.674884+00:00","2024","10"
+"AUD-1464308","Processo de Faturamento","Relatório Final","Neoenergia Pernambuco","2024-10-01","▪
+Avaliar a adequação do processo de Faturamento do Grupo A e B, a interface dos
+sistemas e respectivos recálculos;
+▪
+Verificar o cumprimento dos procedimentos quanto as retificações (refaturamento) de
+faturas definidos.","Perda financeira e imagem.","▪
+Avaliar a adequação dos procedimentos de faturamento dos grupos A e B.
+▪
+Verificar o cumprimento dos procedimentos e controle quanto as retificações das
+faturas.","Janeiro a Maio/2024.",,"2024-09-12","2024-10-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatorio Final de Auditoria - Processo de Faturamento NPER.json","2026-02-13T18:31:54.369652+00:00","2024","10"
+"AUD-1464321","Faturamento","Relatório Final","Neoenergia Comercialização","2024-09-26","Verificar se o faturamento de energia está sendo realizado de acordo com as condições 
+contratuais","Faturamento em condições divergentes do contrato","
+Verificar a acuracidade dos dados inseridos no sistema WBC
+
+Verificar se o volume e valor faturado estão de acordo com a medição, volume e 
+preço da modalidade de faturamento contratada
+
+Verificar o cumprimento de emissão do faturamento","Faturamento realizado de junho a agosto/24.","2024-07-08","2024-09-26","2024-09-30","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Faturamento NC.json","2026-02-13T18:31:56.109022+00:00","2024","09"
+"AUD-1794379","Gestão e Recuperação de Perdas","Relatório Final","Neoenergia Brasília","2025-12-22","Não atendimento dos riscos/metas regulatórias.","
+Avaliar a sistemática de cálculo de perdas para as distribuidoras do Grupo, quanto à
+automação, variáveis consideradas e expurgos.
+
+Recalcular o Índice de Perdas e consistência das suas principais variáveis.","Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Elektro,
+Neoenergia Brasília.","22/12/2025
+Relatório
+Final
+28/11/2025
+Draft
+emitido
+20/07/2025
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório - Gestão e recuperação de perdas - NEO BRASÍLIA.json","2026-02-13T18:31:54.650608+00:00","2025","12"
+"AUD-1464304","Programa Manutenção - Redes","Relatório Final","Neoenergia Elektro","2024-07-03",,"A","Ɩ Avaliar a conformidade do Programa de Manutenção de Redes: Premissas na elaboração 
+do Programa Anual de Manutenção (consistência dos critérios de priorização e matriz de 
+risco); Cumprimento das metas físicas e financeiras (validação dos indicadores 
+relacionados ao processo previsto x realizado); Garantia da qualidade dos serviços de 
+manutenção executados (fiscalização das EPS e tratativas).
+Ɩ Verificar a conformidade dos pagamentos às EPS: Adequação dos pagamentos 
+(validações das medições); Adequação da apropriação dos custos (CAPEX / OPEX).","Plano de manutenção redes 2023 e 2024.",,"2024-05-31","2024-07-03",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final  Programa Manutenção Neo Elektro.json","2026-02-13T18:31:55.777471+00:00","2024","07"
+"AUD-1464308","Processo de Faturamento","Relatório Final","Neoenergia Elektro","2024-10-01","▪
+Avaliar a adequação do processo de Faturamento do Grupo A e B, a interface dos
+sistemas e respectivos recálculos;
+▪
+Verificar o cumprimento dos procedimentos quanto as retificações (refaturamento) de
+faturas definidos.","Perda financeira e imagem.","▪
+Avaliar a adequação dos procedimentos de faturamento dos grupos A e B.
+▪
+Verificar o cumprimento dos procedimentos e controle quanto as retificações das
+faturas.","Janeiro a Maio/2024.",,"2024-09-12","2024-10-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatorio Final de Auditoria - Processo de Faturamento NEKT.json","2026-02-13T18:31:54.216038+00:00","2024","10"
+"AUD-1464331","Programa de Manutenção – Hidrelétricas","Relatório Final",,"2024-06-11",,"A","Usinas hidrelétricas do Grupo Neoenergia (Base de dados 2022,2023 e 2024)","14/06/24
+Relatório
+Final
+11/06/24
+Draft
+do
+Relatório
+07/06/24
+Conclusão dos
+testes",,,,,"s3://auditneo/raw/rel/head/year=2024/Relatório Final  - Manutenção Hidro.json","2026-02-13T18:31:55.590375+00:00","2024","06"
+"AUD-1464367","Acompanhamento dos Objetivos ESG","Relatório Final","Neoenergia","2024-02-26",,"A","Ɩ Objetivo 1: Validar os resultados e metodologias dos cálculos dos objetivos ESG 
+corporativos reportados ao mercado","Resultado dos objetivos ESG 2023",,"2024-02-19","2024-02-26",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final de Auditoria -Acompanhamento Objetivos ESG (1).json","2026-02-13T18:32:02.215756+00:00","2024","02"
+"AUD-1464304","Programa Manutenção - Redes","Relatório Final","Neoenergia Brasília","2024-07-03",,"A","Ɩ Avaliar a conformidade do Programa de Manutenção de Redes: Premissas na elaboração 
+do Programa Anual de Manutenção (consistência dos critérios de priorização e matriz de 
+risco); Cumprimento das metas físicas e financeiras (validação dos indicadores 
+relacionados ao processo previsto x realizado); Garantia da qualidade dos serviços de 
+manutenção executados (fiscalização das EPS e tratativas).
+Ɩ Verificar a conformidade dos pagamentos às EPS: Adequação dos pagamentos 
+(validações das medições); Adequação da apropriação dos custos (CAPEX / OPEX).","Plano de manutenção redes 2023 e 2024.",,"2024-05-31","2024-07-03",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final - Programa Manutenção Neo Brasília.json","2026-02-13T18:31:58.631705+00:00","2024","07"
+"AUD-1794381","Follow Up Parcelamento e Troca de Titularidade","Relatório Final","Neoenergia Brasília","2025-09-10","Verificar o cumprimento dos procedimentos estabelecidos para o parcelamento de 
+débitos de energia, bem como ao processo de troca de titularidade.","Aumento do contas a receber/ inadimplência.","▪
+Objetivo 1: Follow-up das recomendações do trabalho de Parcelamento de Débito
+realizado em 2024: Analisar efetividade das recomendações sugeridas nos trabalhos,
+reperformando os controles e validando evidências atuais quando necessário.
+▪
+Objetivo
+2:
+Analisar
+as
+execuções
+e
+efetividade
+dos
+Controles
+Internos
+implementados no processo de Parcelamento de Débito e troca de titularidade:
+Avaliar as últimas 3 execuções dos Controles e seus respectivos desenhos.","Distribuidoras Neoenergia - Período: Base período de Junho/2024 a Abril/2025.
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles.","2025-05-19","2025-08-05","2025-09-10","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final de Auditoria Interna - Follow Up Parcelamento e Troca de Titularidade - NBSB.json","2026-02-13T18:32:08.583318+00:00","2025","09"
+"AUD-1794369","Construção de Redes","Relatório Final","Transmissão","2025-12-22","Avaliar a evolução das construções das linhas de transmissão e a adequada gestão dos 
+investimentos.","Atraso na entrega das linhas de transmissão e não recebimento da RAP.","Objetivo 1: Avaliar o monitoramento sobre o andamento das construções:
+▪
+Gestão dos prazos e evolução das construções;
+▪
+Gestão do CAPEX realizado versus aprovado;
+▪
+Evoluções das construções fisicamente versus desembolsos.","Transmissoras: Projetos em Construção – Novembro/2025.
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles","2025-10-30","2025-12-17","2025-12-22","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final Auditoria Interna - Construção de Redes - Transmissão.json","2026-02-13T18:32:07.554575+00:00","2025","12"
+"AUD-1794323","Neoenergia.com AUDITORIA INTERNA Internal Use Revisão de Ciclos – SCIIF Benefícios para empregados-NEO","Relatório Final",,"2025-09-24","Unidades organizacionais: Corporativo
+Período auditado: Todos os riscos e controles ativos no SCIIF do ciclo de Benefícios para empregados-NEO
+Data de extração da matriz: 01/09/2025
+Revisar a existência e suficiência de controles que mitiguem os riscos mapeados na ferramenta de controles
+internos;
+Revisar a efetiva execução e documentação dos controles do ciclo na ferramenta de controles internos;
+Conclusão sobre os riscos já mapeados ou novos riscos identificados.",,,,,,,,"s3://auditneo/raw/rel/head/year=2025/Relatório Final - Revisão do Ciclo - Benefícios para empregados-NEO.json","2026-02-13T18:32:06.283637+00:00","2025","09"
+"AUD-1464363","Políticas aprovadas pelo CA","Relatório Final",,"2025-12-26","Verificar o ambiente de controle sobre as principais políticas aprovadas pelo CA","Descumprimento dos requisitos de Governança Corporativa",,"Mapeamento e atualização de controles na data base de 26/11/2025","2025-11-10","2025-12-23","2025-12-26","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final 2025 - Políticas CA.json","2026-02-13T18:32:07.320971+00:00","2025","12"
+"AUD-1794379","Gestão e Recuperação de Perdas","Relatório Final","Neoenergia Elektro","2025-12-22","Não atendimento dos riscos/metas regulatórias.","
+Avaliar a sistemática de cálculo de perdas para as distribuidoras do Grupo, quanto à
+automação, variáveis consideradas e expurgos.
+
+Recalcular o Índice de Perdas e consistência das suas principais variáveis.","Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Elektro,
+Neoenergia Brasília.","22/12/2025
+Relatório
+Final
+28/11/2025
+Draft
+emitido
+20/07/2025
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório - Gestão e recuperação de perdas - NEO ELEKTRO.json","2026-02-13T18:31:55.185661+00:00","2025","12"
+"AUD-1794379","Gestão e Recuperação de Perdas","Relatório Final","Neoenergia Elektro","2025-12-22","Não atendimento dos riscos/metas regulatórias.","
+Avaliar a sistemática de cálculo de perdas para as distribuidoras do Grupo, quanto à
+automação, variáveis consideradas e expurgos.
+
+Recalcular o Índice de Perdas e consistência das suas principais variáveis.","Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Elektro,
+Neoenergia Brasília.","22/12/2025
+Relatório
+Final
+28/11/2025
+Draft
+emitido
+20/07/2025
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório - Gestão e recuperação de perdas - NEO ELEKTRO.json","2026-02-13T18:32:05.194994+00:00","2025","12"
+"AUD-1794379","Gestão e Recuperação de Perdas","Relatório Final","Neoenergia Cosern","2025-12-22","Não atendimento dos riscos/metas regulatórias.","
+Avaliar a sistemática de cálculo de perdas para as distribuidoras do Grupo, quanto à
+automação, variáveis consideradas e expurgos.
+
+Recalcular o Índice de Perdas e consistência das suas principais variáveis.","Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Elektro,
+Neoenergia Brasília.","22/12/2025
+Relatório
+Final
+28/11/2025
+Draft
+emitido
+20/07/2025
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório - Gestão e recuperação de perdas - NEO COSERN.json","2026-02-13T18:32:04.963380+00:00","2025","12"
+"AUD-1794349","Conformidade Ambiental Distribuição","Relatório Final","Neoenergia Coelba","2025-06-16","Verificar o cumprimento das legislações ambientais e condicionantes.","Não obtenção, suspensão ou cancelamento das licenças ambientais.","▪
+Avaliar o rito do processo de licenciamento, autorização e anuência ambiental para
+construções
+e
+alterações
+de
+redes
+e
+subestações
+de
+distribuição,
+linhas
+e
+subestações de subtransmissão
+▪
+Avaliar os mecanismos de controles adotados para cumprimento das condicionantes
+ambientais","Projetos licenciados em 2024 e posição de projetos remanescente em dezembro de
+2024.","2025-02-17","2025-06-02","2025-06-16","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatorio Final de Auditoria - CAD - NCLB.json","2026-02-13T18:32:03.488571+00:00","2025","06"
+"AUD-1464310","Parcelamento de Débitos","Relatório Final","Neoenergia Coelba","2024-07-03",,"A","Ɩ Verificar o cumprimento dos procedimentos estabelecidos para o parcelamento de 
+débitos de energia e troca de titularidade;","Janeiro a Dezembro de 2023.",,"2024-06-24","2024-07-03",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final de Auditoria - Parcelamento de Débitos - Neoenergia Coelba.json","2026-02-13T18:32:00.853318+00:00","2024","07"
+"AUD-1464304","Programa Manutenção - Redes","Relatório Final","Neoenergia Coelba","2024-07-03",,"A","Ɩ Avaliar a conformidade do Programa de Manutenção de Redes: Premissas na elaboração 
+do Programa Anual de Manutenção (consistência dos critérios de priorização e matriz de 
+risco); Cumprimento das metas físicas e financeiras (validação dos indicadores 
+relacionados ao processo previsto x realizado); Garantia da qualidade dos serviços de 
+manutenção executados (fiscalização das EPS e tratativas).
+Ɩ Verificar a conformidade dos pagamentos às EPS: Adequação dos pagamentos 
+(validações das medições); Adequação da apropriação dos custos (CAPEX / OPEX).","Plano de manutenção redes 2023 e 2024.",,"2024-05-31","2024-07-03",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final - Programa Manutenção Neo Coelba.json","2026-02-13T18:31:58.802018+00:00","2024","07"
+"AUD-1794379","Gestão e Recuperação de Perdas","Relatório Final","Neoenergia Cosern","2025-12-22","Não atendimento dos riscos/metas regulatórias.","
+Avaliar a sistemática de cálculo de perdas para as distribuidoras do Grupo, quanto à
+automação, variáveis consideradas e expurgos.
+
+Recalcular o Índice de Perdas e consistência das suas principais variáveis.","Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Elektro,
+Neoenergia Brasília.","22/12/2025
+Relatório
+Final
+28/11/2025
+Draft
+emitido
+20/07/2025
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório - Gestão e recuperação de perdas - NEO COSERN.json","2026-02-13T18:31:54.997486+00:00","2025","12"
+"AUD-1794347","Gestão do Fluxo de Caixa","Relatório Final","Neoenergia","2025-09-05","•
+Validar os valores e estrutura de cálculo para apuração do fluxo de caixa para as 
+empresas do Grupo, considerando as respectivas variáveis e ações implementadas 
+para melhoria destes fluxos.","Continuidade nas operações do Grupo","▪
+Verificar a elaboração e monitoramento do Fluxo de Caixa;
+▪
+Avaliar o enquadramento do Fluxo de Caixa aos limites financeiros","Neoenergia (Consolidado) e Distribuidoras
+Janeiro a Junho/2025.
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles","2025-07-23","2025-09-03","2025-09-05","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Final - Gestão do Fluxo de Caixa.json","2026-02-13T18:32:03.305138+00:00","2025","09"
+"AUD-1464317","Processo de Arrecadação","Relatório Final","Neoenergia Pernambuco","2024-12-18","Perda financeira e menor fluxo de caixa","
+Avaliar os controles do processamento de arrecadação de faturamento
+
+Avaliar o processo de conciliação e registro contábil da arrecadação","Julho a Setembro/2024","18/12/2024
+Relatório
+Final
+16/12/2024
+Draft
+emitido
+01/10/2024
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Processo Arrecadação - Neo PE.json","2026-02-13T18:31:58.444855+00:00","2024","12"
+"AUD-1464312","Gestão de Contratos","Relatório Final","Neoenergia Elektro","2024-10-21","Avaliar os controles sobre o gerenciamento de contratos de serviços e materiais dos 
+principais fornecedores, cumprimento das obrigações e leis trabalhistas.","Gestão dos contratos em desacordo com as premissas da Companhia.","
+Verificar a existência de pagamentos indevidos ou incorretos;
+
+Verificar a existência de pagamentos em desacordo com as premissas contratuais;
+
+Verificar a existência e composição dos aditivos contratuais.","Janeiro a Abril de 2024.","2024-05-17","2024-09-24","2024-10-21","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Gestão de Contratos - Neoenergia Elektro.json","2026-02-13T18:31:56.877027+00:00","2024","10"
+"AUD-1794327","Neoenergia.com AUDITORIA INTERNA Internal Use Revisão de Ciclos – SCIIF Tesouraria","Relatório Final",,"2025-09-22","Unidades organizacionais: Corporativo
+Período auditado: Todos os riscos e controles ativos no SCIIF do ciclo de Tesouraria
+Data de extração da matriz: 01/09/2025
+Revisar a existência e suficiência de controles que mitiguem os riscos mapeados na ferramenta de controles
+internos;
+Revisar a efetiva execução e documentação dos controles do ciclo na ferramenta de controles internos;
+Conclusão sobre os riscos já mapeados ou novos riscos identificados.",,,,,,,,"s3://auditneo/raw/rel/head/year=2025/Relatório Final - Revisão do Ciclo - Tesouraria.json","2026-02-13T18:32:06.661139+00:00","2025","09"
+"AUD-1794379","Gestão e Recuperação de Perdas","Relatório Final","Neoenergia Pernambuco","2025-12-22","Não atendimento dos riscos/metas regulatórias.","
+Avaliar a sistemática de cálculo de perdas para as distribuidoras do Grupo, quanto à
+automação, variáveis consideradas e expurgos.
+
+Recalcular o Índice de Perdas e consistência das suas principais variáveis.","Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Elektro,
+Neoenergia Brasília.","22/12/2025
+Relatório
+Final
+28/11/2025
+Draft
+emitido
+20/07/2025
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório - Gestão e recuperação de perdas - NEO PE.json","2026-02-13T18:31:55.387166+00:00","2025","12"
+"AUD-1794325","Neoenergia.com AUDITORIA INTERNA Internal Use Revisão de Ciclos - SCIIF Entity Level Controls - NEO","Relatório Final",,"2025-09-12","Unidades organizacionais: Corporativo
+Período auditado: Todos os riscos e controles ativos no SCIIF do ciclo de Entity Level Controls-NEO
+Data de extração da matriz: 18/07/2025
+Revisar a existência e suficiência de controles que mitiguem os riscos mapeados na ferramenta de controles
+internos;
+Revisar a efetiva execução e documentação dos controles do ciclo na ferramenta de controles internos;
+Conclusão sobre os riscos já mapeados ou novos riscos identificados.",,,,,,,,"s3://auditneo/raw/rel/head/year=2025/Relatório Final - Revisão do Ciclo - Entity Level - Neo.json","2026-02-13T18:32:06.464723+00:00","2025","09"
+"AUD-1464304","Programa Manutenção - Redes","Relatório Final","Neoenergia Pernambuco","2024-07-03",,"A","Ɩ Avaliar a conformidade do Programa de Manutenção de Redes: Premissas na elaboração 
+do Programa Anual de Manutenção (consistência dos critérios de priorização e matriz de 
+risco); Cumprimento das metas físicas e financeiras (validação dos indicadores 
+relacionados ao processo previsto x realizado); Garantia da qualidade dos serviços de 
+manutenção executados (fiscalização das EPS e tratativas).
+Ɩ Verificar a conformidade dos pagamentos às EPS: Adequação dos pagamentos 
+(validações das medições); Adequação da apropriação dos custos (CAPEX / OPEX).","Plano de manutenção redes 2023 e 2024.",,"2024-05-31","2024-07-03",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final - Programa Manutenção Neo Pernambuco.json","2026-02-13T18:31:59.237888+00:00","2024","07"
+"AUD-1464306","Leitura de Energia","Relatório Final","Neoenergia Coelba","2024-10-01","Avaliar os controles sobre a leitura de consumidores do grupo B (baixa tensão) e do 
+grupo A (alta tensão), os procedimentos de coleta e consistência dos dados; 
+Fiscalização dos serviços executados e, tratamento das anomalias.","Não atendimento dos requisitos regulatórios","
+Avaliar as controles sobre as leituras de energia (Verificar a aderência do 
+cumprimento dos intervalos de leitura conforme previstos na Resolução 1.000 da 
+Aneel; Verificar se todos os medidores instalados estão contemplados na base de 
+leitura da distribuidora; Verificar a adequação dos parâmetros de validação dos 
+dados de leitura, incluindo telemedição, para evitar o registro de valores não usuais; 
+Verificar a adequação da transferência dos dados de leitura para o faturamento 
+(conciliação entre as bases de leitura e faturamento) e Avaliar os controles de 
+acompanhamento e tratamento das anomalias de leitura (atentar para os 
+impedimentos).
+
+Avaliar as fiscalizações dos serviços de leitura executados pelas EPS (Avaliar o 
+processo de validação existente para assegurar a correta execução dos serviços de 
+leitura pela EPS (atentar para aplicação de penalidades).","Leituras realizadas no período de janeiro a maio/2024.","2024-06-10","2024-09-17","2024-10-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final Auditoria _ Leitura Energia - Neoenergia Coelba.json","2026-02-13T18:31:59.483587+00:00","2024","10"
+"AUD-1464310","Parcelamento de Débitos","Relatório Final","Neoenergia Cosern","2024-07-03",,"A","Ɩ Verificar o cumprimento dos procedimentos estabelecidos para o parcelamento de 
+débitos de energia e troca de titularidade;","Janeiro a Dezembro de 2023.",,"2024-06-24","2024-07-03",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final de Auditoria - Parcelamento de Débitos - Neoenergia Cosern.json","2026-02-13T18:32:01.056849+00:00","2024","07"
+"AUD-1794371","Compras Descentralizadas","Relatório Final",,"2025-12-23","Avaliar os controles sobre o processo de compras descentralizadas de materiais e 
+serviços","Compras realizadas sem sinergia com as políticas da Companhia","▪
+Característica dos materiais/serviços contratados e respectivas áreas responsáveis;
+▪
+Níveis de aprovação e possibilidade de fracionamento das compras;
+▪
+Adequação ao procedimento vigente;
+▪
+Monitoramento das compras descentralizadas.","Compras descentralizadas realizadas pelas Distribuidoras entre julho e setembro/2025.
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles","2025-10-13","2025-12-19","2025-12-23","Insatisfatório","s3://auditneo/raw/rel/head/year=2025/Relatório Final - Compras Descentralizadas (2).json","2026-02-13T18:32:05.543062+00:00","2025","12"
+"AUD-1464298","Estruturação da Gestão da Joint Venture - Comerc","Relatório Final",,"2024-12-17","Validar o cumprimento e os controles para exercer os termos e condições estabelecidas
+na operação da Joint Venture","Não atendimento dos termos e condições para as operações da Joint Venture Comerc/ 
+Neoenergia","Avaliar a estrutura da governança estabelecida para a empresa Neoenergia GD, 
+considerando a aderência ao acordo de acionista e Estatuto Social para os seguintes 
+aspectos: periodicidades das reuniões do Conselho de Administração, matérias sujeitas a 
+voto afirmativo das partes e estrutura de reporte.","Projetos em avaliação, Demonstrações Financeiras e documentos de governança","2024-11-25","2024-12-17","2024-12-20","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Estruturação da Gestão da JV-Comerc.json","2026-02-13T18:31:55.931427+00:00","2024","12"
+"AUD-1794351","Exclusão do ICMS na base do PIS/COFINS","Relatório Final",,"2025-05-30","Validar a estrutura e sistemática do cálculo PIS/COFINS para exclusão da base do ICMS.","Penalidades fiscais e inconsistência das informações financeiras.","▪
+Validar o adequado cálculo e registro dos valores excluídos da base do ICMS;
+▪
+Verificar evolução do processo de devolução dos valores arrecadados;","Neoenergia Corporativo
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles","2025-02-24","2025-05-20","2025-05-30","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final - Exclusão ICMS base PIS.COFINS.json","2026-02-13T18:32:05.695662+00:00","2025","05"
+"AUD-1464363","Políticas aprovadas pelo CA","Relatório Final",,"2024-11-01","Verificar o ambiente de controle sobre as principais políticas aprovadas pelo CA","Descumprimento dos requisitos de Governança Corporativa",,"Mapeamento e atualização de controles na data base de 09/10/2024","2024-10-01","2024-10-30","2024-11-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Políticas CA.json","2026-02-13T18:31:57.612846+00:00","2024","11"
+"AUD-1794379","Gestão e Recuperação de Perdas","Relatório Final","Neoenergia Coelba","2025-12-22","Não atendimento dos riscos/metas regulatórias.","
+Avaliar a sistemática de cálculo de perdas para as distribuidoras do Grupo, quanto à
+automação, variáveis consideradas e expurgos.
+
+Recalcular o Índice de Perdas e consistência das suas principais variáveis.","Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Elektro,
+Neoenergia Brasília.","22/12/2025
+Relatório
+Final
+28/11/2025
+Draft
+emitido
+20/07/2025
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório - Gestão e recuperação de perdas - NEO COELBA.json","2026-02-13T18:32:04.760150+00:00","2025","12"
+"AUD-1464306","Leitura de Energia","Relatório Final","Neoenergia Brasília","2024-10-01","Avaliar os controles sobre a leitura de consumidores do grupo B (baixa tensão) e do 
+grupo A (alta tensão), os procedimentos de coleta e consistência dos dados; 
+Fiscalização dos serviços executados e, tratamento das anomalias.","Não atendimento dos requisitos regulatórios","
+Avaliar as controles sobre as leituras de energia (Verificar a aderência do 
+cumprimento dos intervalos de leitura conforme previstos na Resolução 1.000 da 
+Aneel; Verificar se todos os medidores instalados estão contemplados na base de 
+leitura da distribuidora; Verificar a adequação dos parâmetros de validação dos dados 
+de leitura, incluindo telemedição, para evitar o registro de valores não usuais; Verificar 
+a adequação da transferência dos dados de leitura para o faturamento (conciliação 
+entre as bases de leitura e faturamento) e Avaliar os controles de acompanhamento e 
+tratamento das anomalias de leitura (atentar para os impedimentos).
+
+Avaliar as fiscalizações dos serviços de leitura executados pelas EPS (Avaliar o 
+processo de validação existente para assegurar a correta execução dos serviços de 
+leitura pela EPS (atentar para aplicação de penalidades).","Leituras realizadas no período de janeiro a maio/2024.","2024-06-10","2024-09-17","2024-10-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Leitura de Energia Neoenergia Brasília.json","2026-02-13T18:31:57.263276+00:00","2024","10"
+"AUD-1464312","Gestão de Contratos","Relatório Final","Neoenergia Brasília","2024-10-21","Avaliar os controles sobre o gerenciamento de contratos de serviços e materiais dos 
+principais fornecedores, cumprimento das obrigações e leis trabalhistas.","Gestão dos contratos em desacordo com as premissas da Companhia.","
+Verificar a existência de pagamentos indevidos ou incorretos;
+
+Verificar a existência de pagamentos em desacordo com as premissas contratuais;
+
+Verificar a existência e composição dos aditivos contratuais.","Janeiro a Abril de 2024.","2024-05-17","2024-09-24","2024-10-21","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Gestão de Contratos - Neoenergia Brasília.json","2026-02-13T18:31:56.282627+00:00","2024","10"
+"AUD-1464306","Leitura de Energia","Relatório Final","Neoenergia Pernambuco","2024-10-01","Avaliar os controles sobre a leitura de consumidores do grupo B (baixa tensão) e do 
+grupo A (alta tensão), os procedimentos de coleta e consistência dos dados; 
+Fiscalização dos serviços executados e, tratamento das anomalias.","Não atendimento dos requisitos regulatórios","
+Avaliar as controles sobre as leituras de energia (Verificar a aderência do 
+cumprimento dos intervalos de leitura conforme previstos na Resolução 1.000 da 
+Aneel; Verificar se todos os medidores instalados estão contemplados na base de 
+leitura da distribuidora; Verificar a adequação dos parâmetros de validação dos 
+dados de leitura, incluindo telemedição, para evitar o registro de valores não usuais; 
+Verificar a adequação da transferência dos dados de leitura para o faturamento 
+(conciliação entre as bases de leitura e faturamento) e Avaliar os controles de 
+acompanhamento e tratamento das anomalias de leitura (atentar para os 
+impedimentos).
+
+Avaliar as fiscalizações dos serviços de leitura executados pelas EPS (Avaliar o 
+processo de validação existente para assegurar a correta execução dos serviços de 
+leitura pela EPS (atentar para aplicação de penalidades).","Leituras realizadas no período de janeiro a maio/2024.","2024-06-10","2024-09-17","2024-10-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final Auditoria _ Leitura Energia - Neoenergia PE.json","2026-02-13T18:31:59.874524+00:00","2024","10"
+"AUD-1794357","Atendimento aos requisitos ESG","Relatório Final","Neoenergia","2025-10-07","Analisar a gestão ESG do Grupo, com foco em Governança, Riscos e melhorias nos 
+indicadores.","Indicadores e reportes incorretos.","Avaliar o atendimento aos requisitos ESG e ações de melhoria dos resultados:
+▪
+Alinhamento dos critérios e métricas utilizados para priorização e materialidade dos
+temas ESG com a estratégia;
+▪
+Ações de melhoria para os resultados dos temas materiais;
+▪
+Adequações para atendimento ao IFRS S1 e S2.","Corporativo: Grupo Neoenergia.
+Período: vigente
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles","2025-08-29","2025-09-29","2025-10-07","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final de Auditoria Interna - Atendimento aos requisitos ESG.json","2026-02-13T18:32:08.155226+00:00","2025","10"
+"AUD-1794379","Gestão e Recuperação de Perdas","Relatório Final","Neoenergia Pernambuco","2025-12-22","Não atendimento dos riscos/metas regulatórias.","
+Avaliar a sistemática de cálculo de perdas para as distribuidoras do Grupo, quanto à
+automação, variáveis consideradas e expurgos.
+
+Recalcular o Índice de Perdas e consistência das suas principais variáveis.","Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Elektro,
+Neoenergia Brasília.","22/12/2025
+Relatório
+Final
+28/11/2025
+Draft
+emitido
+20/07/2025
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório - Gestão e recuperação de perdas - NEO PE.json","2026-02-13T18:32:05.373209+00:00","2025","12"
+"AUD-1464312","Gestão de Contratos","Relatório Final","Neoenergia Coelba","2024-10-21","Avaliar os controles sobre o gerenciamento de contratos de serviços e materiais dos 
+principais fornecedores, cumprimento das obrigações e leis trabalhistas.","Gestão dos contratos em desacordo com as premissas da Companhia.","
+Verificar a existência de pagamentos indevidos ou incorretos;
+
+Verificar a existência de pagamentos em desacordo com as premissas contratuais;
+
+Verificar a existência e composição dos aditivos contratuais.","Janeiro a Abril de 2024.","2024-05-17","2024-09-24","2024-10-21","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Gestão de Contratos - Neoenergia Coelba.json","2026-02-13T18:31:56.491516+00:00","2024","10"
+"AUD-1794379","Gestão e Recuperação de Perdas","Relatório Final","Neoenergia Brasília","2025-12-22","Não atendimento dos riscos/metas regulatórias.","
+Avaliar a sistemática de cálculo de perdas para as distribuidoras do Grupo, quanto à
+automação, variáveis consideradas e expurgos.
+
+Recalcular o Índice de Perdas e consistência das suas principais variáveis.","Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Elektro,
+Neoenergia Brasília.","22/12/2025
+Relatório
+Final
+28/11/2025
+Draft
+emitido
+20/07/2025
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório - Gestão e recuperação de perdas - NEO BRASÍLIA.json","2026-02-13T18:32:04.574401+00:00","2025","12"
+"AUD-1794355","Gestão de Serviços Gerais – Frota e Viagens","Relatório Final","Grupo Neoenergia - Distribuidoras","2025-12-18","Avaliar os controles implementados na gestão dos gastos de Frota
+(manutenções, combustíveis, pedágios e outros) e gastos de viagens
+contratados pela Agencia Externa.","Desembolsos indevidos.","▪
+Objetivo 1: Avaliar a efetividade dos controles na gestão dos custos da frota.
+▪
+Objetivo 2: Avaliar a efetividade dos controles na gestão dos custos de viagens
+contratados pela Flytour.","Janeiro/2025 à Setembro/2025
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles","2025-10-13","2025-12-12","2025-12-18","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório - Gestão de SG - Frota e Viagem.json","2026-02-13T18:32:04.387202+00:00","2025","12"
+"AUD-1794361","(REEMISSÃO) Indicadores de Saúde e Segurança","Relatório Final","Neoenergia","2025-06-30","Avaliação do processo de registro de acidentes e respectivas evidências, identificando 
+possíveis fragilidades de controle.","Cálculo incorreto dos indicadores de saúde e segurança.","Objetivo 1: Avaliar a existência e eficácia dos controles para garantir a integridade dos
+registros de acidentes e suas classificações:
+▪
+Acidentes com colaboradores próprios;
+▪
+Acidentes com colaboradores terceiros;
+▪
+Acidentes com população.","Distribuidoras, Transmissoras, Renováveis, Hidro e Liberalizados, entre Janeiro de 2024 à
+Fevereiro de 2025.","2025-02-24","2025-05-22","2025-06-30","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final de Auditoria Interna - Indicadores de Saúde e Segurança (reemissão).json","2026-02-13T18:32:09.539188+00:00","2025","06"
+"AUD-1794387","Remuneração Variável de Consultores e Parceiros Comerciais","Relatório Final",,"2025-09-19","Pagamento da remuneração variável dos consultores e parceiros comerciais em
+desacordo com as diretrizes estabelecidas","Verificar a conformidade dos pagamentos da remuneração variável, considerando:
+
+Integridade da base de dados que compõem os cálculos de pagamento.
+
+Adequação e aderência as regras de apuração estabelecidas pela companhia.
+
+Validade e aprovação dos contratos/propostas e demais documentações suporte.
+
+Controles internos para mitigação de pagamentos indevidos ou em duplicidade.","Propostas fechadas entre janeiro/25 a maio/2025.","19/09/25
+Relatório
+Final
+11/09/2025
+Draft
+emitido
+19/05/2025
+Data início
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/AUD-1794387 - Relatório Final - Remuneração Variável.json","2026-02-13T18:32:03.102924+00:00","2025","09"
+"AUD-1464327","Relacionamento com o cliente","Relatório Final",,"2024-09-13","Verificar a aplicação de controles e ações para garantir a eficiência no relacionamento 
+com o cliente da comercializadora.","Não atingimento das metas de vendas estabelecidas","Avaliar os controles e ações aplicadas para garantir a eficiência no relacionamento com 
+o cliente","Informações dos Clientes de Comercialização de energia do período de jan a jun/24","2024-07-03","2024-08-15",,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final _Relacionamento com cliente.json","2026-02-13T18:32:00.395855+00:00","2024","09"
+"AUD-1794375","Obras Rede de Distribuição","Relatório Final","Neoenergia Coelba","2026-01-16","Verificar o cumprimento do programa de Investimento de obras, com ênfase no 
+cumprimento do programa Luz para Todos na Neoenergia Coelba (12ª tranche)","Não alinhamento à estratégia do plano de investimento e atendimento dos requisitos
+regulatórios.","▪
+Avaliar o processo de gestão de projetos de obras de distribuição contemplando o
+Plano de Resultado Aneel e 12ª Tranche de LPT.
+▪
+Avaliar em conjunto com a área melhorias nos processos de Comunicação com
+Clientes e gestão de projetos embargados.","Neoenergia Coelba – 2024/2025","2025-10-06","2025-12-22","2026-01-16","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final de Auditoria - Obras Rede Distribuição.json","2026-02-13T18:32:07.933673+00:00","2026","01"
+"AUD-1464308","Processo de Faturamento","Relatório Final","Neoenergia Brasília","2024-10-01","▪
+Avaliar a adequação do processo de Faturamento do Grupo A e B, a interface dos
+sistemas e respectivos recálculos;
+▪
+Verificar o cumprimento dos procedimentos quanto as retificações (refaturamento) de
+faturas definidos.","Perda financeira e imagem.","▪
+Avaliar a adequação dos procedimentos de faturamento dos grupos A e B.
+▪
+Verificar o cumprimento dos procedimentos e controle quanto as retificações das
+faturas.","Janeiro a Maio/2024.",,"2024-09-12","2024-10-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatorio Final de Auditoria - Processo de Faturamento NBSB.json","2026-02-13T18:31:53.682811+00:00","2024","10"
+"AUD-1464306","Leitura de Energia","Relatório Final","Neoenergia Elektro","2024-10-01","Avaliar os controles sobre a leitura de consumidores do grupo B (baixa tensão) e do 
+grupo A (alta tensão), os procedimentos de coleta e consistência dos dados; 
+Fiscalização dos serviços executados e, tratamento das anomalias.","Não atendimento dos requisitos regulatórios","
+Avaliar as controles sobre as leituras de energia (Verificar a aderência do 
+cumprimento dos intervalos de leitura conforme previstos na Resolução 1.000 da 
+Aneel; Verificar se todos os medidores instalados estão contemplados na base de 
+leitura da distribuidora; Verificar a adequação dos parâmetros de validação dos dados 
+de leitura, incluindo telemedição, para evitar o registro de valores não usuais; Verificar 
+a adequação da transferência dos dados de leitura para o faturamento (conciliação 
+entre as bases de leitura e faturamento) e Avaliar os controles de acompanhamento e 
+tratamento das anomalias de leitura (atentar para os impedimentos).
+
+Avaliar as fiscalizações dos serviços de leitura executados pelas EPS (Avaliar o 
+processo de validação existente para assegurar a correta execução dos serviços de 
+leitura pela EPS (atentar para aplicação de penalidades).","Leituras realizadas no período de janeiro a maio/2024.","2024-06-10","2024-09-17","2024-10-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final Auditoria_Leitura de Energia Neoenergia Elektro.json","2026-02-13T18:32:00.108256+00:00","2024","10"
+"AUD-1464310","Parcelamento de Débitos","Relatório Final","Neoenergia Brasília","2024-07-03",,"A","Ɩ Verificar o cumprimento dos procedimentos estabelecidos para o parcelamento de 
+débitos de energia e troca de titularidade;","Janeiro a Dezembro de 2023.",,"2024-06-24","2024-07-03",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final de Auditoria - Parcelamento de Débitos - Neoenergia Brasília.json","2026-02-13T18:32:00.663647+00:00","2024","07"
+"AUD-1464317","Processo de Arrecadação","Relatório Final","Neoenergia Brasília","2024-12-18","Perda financeira e menor fluxo de caixa","
+Avaliar os controles do processamento de arrecadação de faturamento
+
+Avaliar o processo de conciliação e registro contábil da arrecadação","Julho a Setembro/2024","18/12/2024
+Relatório
+Final
+16/12/2024
+Draft
+emitido
+01/10/2024
+Data início 
+do trabalho",,,,"Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Processo Arrecadação - Neo Brasilia.json","2026-02-13T18:31:57.775643+00:00","2024","12"
+"AUD-1794383","Gestão de Energia","Relatório Final",,"2025-12-23","Verificar a adequação dos controles para gerenciamento da carteira da Neoenergia 
+Comercializadora.","Descumprimento de diretrizes de comercialização","▪
+Adequação da carteira Neoenergia á Diretrizes de Risco;
+▪
+Verificar se os preços praticados nas vendas de energia estão de acordo com a
+Diretriz GESEN do respectivo período.","Comercializadora: Gestão da carteira de energia Janeiro a Outubro/2025
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles","2025-10-20","2025-12-19","2025-12-23","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final - Gestão de Energia.json","2026-02-13T18:32:05.918228+00:00","2025","12"
+"AUD-1464325","Smart Solutions","Relatório Final",,"2024-07-01",,"A","Contratos de soluções de engenharia e mobilidade elétrica vigentes em Maio/24","01/07/24
+Relatório
+Final
+19/06/2024
+Draft
+do
+Relatório
+18/6/24
+Conclusão dos 
+testes",,,,,"s3://auditneo/raw/rel/head/year=2024/Relatório Final_Smart Solutions.json","2026-02-13T18:32:02.877970+00:00","2024","07"
+"AUD-1464292","Política de Separação de Atividades","Relatório Final",,"2024-12-09","Verificar o cumprimento das ações acordadas para garantir a aplicação dos requisitos de 
+tratamento de dados dos clientes de distribuição com potencial de migração para o 
+mercado livre.","Descumprimento de premissas regulatórias, legais e políticas internas","Eficiência dos controles aplicados para garantir o cumprimento da política de separação 
+de atividades, considerando: Acesso aos dados comercialmente sensíveis com 
+autorização do cliente; Segregação e restrição de acesso aos dados dos clientes 
+armazenados nos sistemas da Companhia; Comunicação interna e treinamento; Canal 
+para consulta e indicação de tratativas em caso de dúvidas sobre o tema.","Informações consideradas comercialmente sensíveis","2024-10-02","2024-11-26","2024-12-13","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/RF-Politicia de Separação de Atividades.json","2026-02-13T18:31:53.507704+00:00","2024","12"
+"AUD-1464304","Programa Manutenção - Redes","Relatório Final","Neoenergia Cosern","2024-07-03",,"A","Ɩ Avaliar a conformidade do Programa de Manutenção de Redes: Premissas na elaboração 
+do Programa Anual de Manutenção (consistência dos critérios de priorização e matriz de 
+risco); Cumprimento das metas físicas e financeiras (validação dos indicadores 
+relacionados ao processo previsto x realizado); Garantia da qualidade dos serviços de 
+manutenção executados (fiscalização das EPS e tratativas).
+Ɩ Verificar a conformidade dos pagamentos às EPS: Adequação dos pagamentos 
+(validações das medições); Adequação da apropriação dos custos (CAPEX / OPEX).","Plano de manutenção redes 2023 e 2024.",,"2024-05-31","2024-07-03",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final - Programa Manutenção Neo Cosern.json","2026-02-13T18:31:59.047471+00:00","2024","07"
+"AUD-1464310","Parcelamento de Débitos","Relatório Final","Neoenergia Pernambuco","2024-07-03",,"A","Ɩ Verificar o cumprimento dos procedimentos estabelecidos para o parcelamento de 
+débitos de energia e troca de titularidade;","Janeiro a Dezembro de 2023.",,"2024-06-24","2024-07-03",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final de Auditoria - Parcelamento de Débitos - Neoenergia Pernambuco.json","2026-02-13T18:32:01.828463+00:00","2024","07"
+"AUD-1464335","Saúde e Segurança","Relatório Final","Regulamentadoras de Saúde e Medicina do Trabalho –","2024-05-07",,"A","Ɩ Avaliar a eficácia do monitoramento do sistema de gestão de saúde e segurança;
+Ɩ Avaliar a eficácia dos controles aplicados à segurança;
+Ɩ Avaliar a eficácia dos controles aplicados à saúde;
+Ɩ Avaliar a eficácia dos controles aplicados aos serviços terceirizados.","Parques eólicos e solar em operação com dados coletados de Jan/23 a Jan/24.",,"2024-04-11","2024-05-07",,"s3://auditneo/raw/rel/head/year=2024/Relatório Final_Saúde e Segurança Eólicas e Solar.json","2026-02-13T18:32:02.607493+00:00","2024","05"
+"AUD-1794381","Follow Up Parcelamento e Troca de Titularidade","Relatório Final","Neoenergia Coelba","2025-09-10","Verificar o cumprimento dos procedimentos estabelecidos para o parcelamento de 
+débitos de energia, bem como ao processo de troca de titularidade.","Aumento do contas a receber/ inadimplência.","▪
+Objetivo 1: Follow-up das recomendações do trabalho de Parcelamento de Débito
+realizado em 2024: Analisar efetividade das recomendações sugeridas nos trabalhos,
+reperformando os controles e validando evidências atuais quando necessário.
+▪
+Objetivo
+2:
+Analisar
+as
+execuções
+e
+efetividade
+dos
+Controles
+Internos
+implementados no processo de Parcelamento de Débito e troca de titularidade:
+Avaliar as últimas 3 execuções dos Controles e seus respectivos desenhos.","Distribuidoras Neoenergia - Período: Base período de Junho/2024 a Abril/2025.
+Serão avaliados os aspectos de Governança, Gerenciamento de Riscos e Controles.","2025-05-19","2025-08-05","2025-09-10","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2025/Relatório Final de Auditoria Interna - Follow Up Parcelamento e Troca de Titularidade - NCLB.json","2026-02-13T18:32:08.816685+00:00","2025","09"
+"AUD-1464312","Gestão de Contratos","Relatório Final","Neoenergia Pernambuco","2024-10-21","Avaliar os controles sobre o gerenciamento de contratos de serviços e materiais dos 
+principais fornecedores, cumprimento das obrigações e leis trabalhistas.","Gestão dos contratos em desacordo com as premissas da Companhia.","
+Verificar a existência de pagamentos indevidos ou incorretos;
+
+Verificar a existência de pagamentos em desacordo com as premissas contratuais;
+
+Verificar a existência e composição dos aditivos contratuais.","Janeiro a Abril de 2024.","2024-05-17","2024-09-24","2024-10-21","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final - Gestão de Contratos - Neoenergia Pernambuco.json","2026-02-13T18:31:57.102315+00:00","2024","10"
+"AUD-1464306","Leitura de Energia","Relatório Final","Neoenergia Cosern","2024-10-01","Avaliar os controles sobre a leitura de consumidores do grupo B (baixa tensão) e do 
+grupo A (alta tensão), os procedimentos de coleta e consistência dos dados; 
+Fiscalização dos serviços executados e, tratamento das anomalias.","Não atendimento dos requisitos regulatórios","
+Avaliar as controles sobre as leituras de energia (Verificar a aderência do 
+cumprimento dos intervalos de leitura conforme previstos na Resolução 1.000 da 
+Aneel; Verificar se todos os medidores instalados estão contemplados na base de 
+leitura da distribuidora; Verificar a adequação dos parâmetros de validação dos 
+dados de leitura, incluindo telemedição, para evitar o registro de valores não usuais; 
+Verificar a adequação da transferência dos dados de leitura para o faturamento 
+(conciliação entre as bases de leitura e faturamento) e Avaliar os controles de 
+acompanhamento e tratamento das anomalias de leitura (atentar para os 
+impedimentos).
+
+Avaliar as fiscalizações dos serviços de leitura executados pelas EPS (Avaliar o 
+processo de validação existente para assegurar a correta execução dos serviços de 
+leitura pela EPS (atentar para aplicação de penalidades).","Leituras realizadas no período de janeiro a maio/2024.","2024-06-10","2024-09-17","2024-10-01","Satisfatório com melhorias","s3://auditneo/raw/rel/head/year=2024/Relatório Final Auditoria _ Leitura Energia - Neoenergia Cosern.json","2026-02-13T18:31:59.662040+00:00","2024","10"
