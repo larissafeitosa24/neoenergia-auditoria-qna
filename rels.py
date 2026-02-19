@@ -33,7 +33,7 @@ NEO_GREEN = "#7CC04B"
 NEO_BLUE = "#0060A9"
 NEO_DARK = "#014e87"
 
-st.set_page_config(page_title="Neoenergia • Q&A Enterprise", page_icon="📗", layout="wide")
+st.set_page_config(page_title="Neoenergia • Consulta Relatórios de Auditoria", page_icon="📗", layout="wide")
 
 CSS = f"""
 <style>
@@ -343,7 +343,6 @@ if f_title:
 if f_company:
     heads_filt = heads_filt[heads_filt["company"].isin(f_company)]
 if f_year:
-    # Tratar "Sem ano"
     years_norm = [("" if y == "Sem ano" else y) for y in f_year]
     heads_filt = heads_filt[heads_filt["ano_filter"].astype(str).isin(years_norm)]
 
@@ -449,7 +448,6 @@ def _find_related_auds(question: str, df_h: pd.DataFrame, df_f: pd.DataFrame, co
             if a not in seen:
                 ordered.append(a); seen.add(a)
         if ordered:
-            # Restringe por empresa, se informada
             if companies and "company" in df_h.columns:
                 valids = set(df_h[df_h["company"].isin(companies)]["aud_code"])
                 ordered = [a for a in ordered if a in valids]
@@ -479,7 +477,6 @@ def _find_related_auds(question: str, df_h: pd.DataFrame, df_f: pd.DataFrame, co
 
 def _apply_year_month_filters(df_head: pd.DataFrame, years: list, months: list, this_month=False, this_year=False):
     out = df_head.copy()
-    # relativos
     today = datetime.date.today()
     if this_year and "ano_filter" in out.columns:
         out = out[out["ano_filter"].astype(str) == str(today.year)]
@@ -491,7 +488,6 @@ def _apply_year_month_filters(df_head: pd.DataFrame, years: list, months: list, 
         ed = pd.to_datetime(out["emission_date"], errors="coerce")
         out = out[(ed.dt.year == today.year) & (ed.dt.month == today.month)]
 
-    # absolutos
     if years:
         if "ano_filter" in out.columns:
             out = out[out["ano_filter"].astype(str).isin(years)]
@@ -523,7 +519,6 @@ def _answer_count_recommendations(q, df_h, df_f, corpus):
 
     auds_final = head["aud_code"].unique().tolist()
     anos = sorted(set(head["ano_filter"].dropna().astype(str).tolist()))
-    # Reco = constatações com recommendation não vazia
     df_find = df_f[df_f["aud_code"].isin(auds_final)].copy()
     if risks:
         df_find = df_find[df_find["risk_filter"].isin(risks)]
@@ -660,6 +655,45 @@ def _answer_count_trabalhos(q, df_h, df_f, corpus):
     res = search_tf(q, corpus, top_k=12)
     return ans, res
 
+def _answer_list_trabalhos(q, df_h, df_f, corpus):
+    """
+    Lista trabalhos (AUD) relacionados, com título (e se houver, empresa e ano).
+    """
+    qn = _norm_text(q)
+    yrs = _extract_years(qn); months = _extract_months(qn)
+    this_m, this_y = _extract_relative_time(qn)
+    companies = _extract_companies(q, df_h)
+
+    auds = _find_related_auds(q, df_h, df_f, corpus, top_k=15, companies=companies)
+    if not auds:
+        return "Não encontrei trabalhos relacionados ao tema da sua pergunta.", None
+
+    head = df_h[df_h["aud_code"].isin(auds)].copy()
+    head = _apply_year_month_filters(head, yrs, months, this_month=this_m, this_year=this_y)
+    if companies and "company" in head.columns:
+        head = head[head["company"].isin(companies)]
+    if head.empty:
+        return "Não encontrei trabalhos para o período solicitado.", None
+
+    head["__ord__"] = head["aud_code"].apply(lambda x: auds.index(x) if x in auds else 9999)
+    head = head.sort_values(["__ord__", "aud_code"]).drop(columns=["__ord__"], errors="ignore")
+
+    linhas = []
+    for _, r in head.head(12).iterrows():
+        aud = r["aud_code"]
+        title = str(r.get("title", "")).strip() or "(sem título)"
+        company = str(r.get("company", "")).strip()
+        ano = str(r.get("ano_filter", "")).strip()
+        meta = []
+        if company: meta.append(company)
+        if ano: meta.append(ano)
+        meta_txt = f" ({', '.join(meta)})" if meta else ""
+        linhas.append(f"- **{aud}** — {title}{meta_txt}")
+
+    ans = "Trabalhos identificados:\n" + "\n".join(linhas)
+    results = search_tf(q, corpus, top_k=12)
+    return ans, results
+
 def try_natural_answer(question: str, df_h: pd.DataFrame, df_f: pd.DataFrame, corpus: pd.DataFrame):
     """
     Router de intents com interpretação mínima + filtros implícitos:
@@ -689,6 +723,10 @@ def try_natural_answer(question: str, df_h: pd.DataFrame, df_f: pd.DataFrame, co
     if re.search(r"\bquant(os|idade)\b.*(trabalh|relat[oó]ri|aud)\b", qn):
         return _answer_count_trabalhos(question, df_h, df_f, corpus)
 
+    # Intent: listar trabalhos / relatórios
+    if re.search(r"\b(quais|listar|lista)\b.*(trabalh|relat[oó]ri|aud)", qn) or "quais foram os trabalhos" in qn:
+        return _answer_list_trabalhos(question, df_h, df_f, corpus)
+
     # Fallback: resumo curto do relatório mais relevante
     head_corpus = corpus[corpus["source_type"]=="HEAD"]
     if not head_corpus.empty:
@@ -711,6 +749,9 @@ def try_natural_answer(question: str, df_h: pd.DataFrame, df_f: pd.DataFrame, co
 # ===========================================================
 st.subheader("💬 Pergunte sobre os relatórios")
 
+# Preferência de exibição de fontes (opcional)
+show_sources = st.checkbox("Mostrar fontes (trechos)", value=False)
+
 if "history" not in st.session_state:
     st.session_state["history"] = []
 
@@ -729,7 +770,7 @@ if q:
     st.session_state["history"].append(("user", q))
     st.session_state["history"].append(("assistant", answer, results))
 
-# Renderização
+# Renderização (sem trechos por padrão; exibe só se show_sources=True)
 for msg in st.session_state["history"]:
     if msg[0] == "user":
         with st.chat_message("user"):
@@ -737,10 +778,11 @@ for msg in st.session_state["history"]:
     else:
         with st.chat_message("assistant"):
             st.write(msg[1])  # resposta curta e natural sempre que possível
-            st.markdown("**Trechos utilizados:**")
-            for _, r in msg[2].iterrows():
-                tag = f"[{r['aud_code']} – {r['finding_id']}]"
-                st.markdown(f"<div class='source'><b>{tag}</b><br>{r['text'][:500]}...</div>", unsafe_allow_html=True)
+            if show_sources:
+                st.markdown("**Trechos utilizados:**")
+                for _, r in msg[2].iterrows():
+                    tag = f"[{r['aud_code']} – {r['finding_id']}]"
+                    st.markdown(f"<div class='source'><b>{tag}</b><br>{r['text'][:500]}...</div>", unsafe_allow_html=True)
 
 # ===========================================================
 # Exportação (Simples e Detalhada)
