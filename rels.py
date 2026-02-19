@@ -9,12 +9,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 import math
 import datetime
 from docx import Document
-from docx.shared import Inches  # <-- NEW (para o DOCX detalhado)
+from docx.shared import Inches
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import ImageReader
 from reportlab.lib.colors import HexColor
-# NEW: platypus para PDF detalhado
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, PageBreak, Image as RLImage, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
@@ -129,7 +128,6 @@ def enrich_impact(df: pd.DataFrame) -> pd.DataFrame:
     Resultado final é escrito em df['impact'].
     """
     df = df.copy()
-    # Garante colunas candidatas existirem (nem que vazias)
     df = ensure_col(df, "tipo_de_constatacao", ["tipo_de_constatacao", "tipo_de_constatao"], default="")
     df = ensure_col(df, "associated_main_risk_category", ["associated_main_risk_category"], default="")
     df = ensure_col(df, "impact", ["impact"], default="")
@@ -209,11 +207,9 @@ def search_tf(question, corpus, top_k):
     return corpus.sort_values("score", ascending=False).head(top_k)
 
 def _counts_by_aud_in_results(contexts_df: pd.DataFrame) -> pd.DataFrame:
-    """Conta findings únicos por AUD no subconjunto de resultados (apenas source_type=FIND)."""
     finds = contexts_df[contexts_df["source_type"] == "FIND"].copy()
     if finds.empty:
         return pd.DataFrame(columns=["aud_code", "qtd_findings"])
-    # Pode haver chunks repetidos do mesmo finding; contar unique finding_id por aud_code
     g = finds.groupby("aud_code")["finding_id"].nunique().reset_index(name="qtd_findings")
     return g.sort_values(["qtd_findings", "aud_code"], ascending=[False, True])
 
@@ -235,7 +231,6 @@ def build_answer(contexts):
         for _, r in finds.head(5).iterrows():
             tag = f"[{r['aud_code']} – {r['finding_id']}]"
             out.append(f"- {r['text'][:300]}... _(Fonte: {tag})_")
-        # NEW: contagem por AUD nos resultados
         out.append("")
         out.append("**Contagem de constatações por relatório (no resultado retornado):**")
         cnt_df = _counts_by_aud_in_results(contexts)
@@ -260,10 +255,18 @@ if "aud_code" not in df_h.columns:
     st.error("O CSV de relatórios não contém a coluna 'aud_code'. Verifique HEAD_URL.")
 else:
     df_h["aud_code"] = df_h["aud_code"].astype(str).str.strip().str.upper()
-# Evita NaN
-for c in ["classification"]:
+for c in ["classification", "title", "company"]:
     if c in df_h.columns:
         df_h[c] = df_h[c].fillna("")
+
+# Deriva 'ano_filter' (de 'ano' se existir, senão de emission_date)
+if "ano" in df_h.columns:
+    df_h["ano_filter"] = df_h["ano"].astype(str)
+else:
+    if "emission_date" in df_h.columns:
+        df_h["ano_filter"] = pd.to_datetime(df_h["emission_date"], errors="coerce").dt.year.astype("Int64").astype(str)
+    else:
+        df_h["ano_filter"] = ""
 
 # CONSTATAÇÕES: criar/garantir campos esperados
 if "aud_code" not in df_f.columns:
@@ -292,14 +295,17 @@ df_f = ensure_col(df_f, "due_date", [
     "end_date"
 ], default="")
 df_f = ensure_col(df_f, "finding_text", ["constatacao", "constatao", "resposta"], default="")
-# Tema (negócio associado ou compromissos)
 df_f = ensure_col(df_f, "tema", ["negocio_associado", "negcio_associado", "compromissos_da_auditoria"], default="")
+
 # Impacto enriquecido (priorização)
 df_f = ensure_col(df_f, "impact", ["impact"], default="")
 df_f = enrich_impact(df_f)
 
+# Coluna para filtro de risco (usa impact enriquecido)
+df_f["risk_filter"] = df_f.get("impact", "").fillna("").astype(str).str.strip()
+
 # Evita NaN
-for c in ["status", "tema", "impact"]:
+for c in ["status", "tema", "impact", "risk_filter"]:
     if c in df_f.columns:
         df_f[c] = df_f[c].fillna("")
 
@@ -316,48 +322,54 @@ if logo_bytes:
 st.title("📗 Q&A Enterprise Neoenergia (100% Automático)")
 
 # ===========================================================
-# Filtros (locais)
+# Filtros (substituídos)
 # ===========================================================
 st.subheader("🔎 Filtros")
 
 cols = st.columns(4)
 with cols[0]:
-    f_aud = st.multiselect("AUD(s)", sorted(df_h["aud_code"].dropna().astype(str).unique()))
+    f_title = st.multiselect("Título do trabalho", sorted(pd.Series(df_h["title"]).dropna().astype(str).unique()))
 with cols[1]:
-    if "classification" in df_h.columns:
-        f_class = st.multiselect("Classificação", sorted(pd.Series(df_h["classification"]).dropna().astype(str).unique()))
-    else:
-        f_class = []
+    f_risk = st.multiselect("Risco da recomendação", sorted(pd.Series(df_f["risk_filter"]).replace("", pd.NA).dropna().unique()))
 with cols[2]:
-    if "status" in df_f.columns:
-        f_status = st.multiselect("Status (Findings)", sorted(pd.Series(df_f["status"]).dropna().astype(str).unique()))
-    else:
-        f_status = []
+    f_company = st.multiselect("Empresa", sorted(pd.Series(df_h["company"]).dropna().astype(str).unique())) if "company" in df_h.columns else []
 with cols[3]:
-    if "tema" in df_f.columns:
-        f_tema = st.multiselect("Tema", sorted(pd.Series(df_f["tema"]).dropna().astype(str).unique()))
-    else:
-        f_tema = []
+    f_year = st.multiselect("Ano", sorted(pd.Series(df_h["ano_filter"]).replace("","Sem ano").unique()))
+
+# Aplica filtros sobre HEAD e encontra aud_codes
+heads_filt = df_h.copy()
+if f_title:
+    heads_filt = heads_filt[heads_filt["title"].isin(f_title)]
+if f_company:
+    heads_filt = heads_filt[heads_filt["company"].isin(f_company)]
+if f_year:
+    # Tratar "Sem ano"
+    years_norm = [("" if y == "Sem ano" else y) for y in f_year]
+    heads_filt = heads_filt[heads_filt["ano_filter"].astype(str).isin(years_norm)]
+
+aud_subset = set(heads_filt["aud_code"]) if not heads_filt.empty else set()
 
 filtered_corpus = corpus.copy()
-if f_aud:
-    filtered_corpus = filtered_corpus[filtered_corpus["aud_code"].isin(f_aud)]
-if f_status:
-    tmp = df_f[df_f["status"].isin(f_status)]["finding_id"].unique()
-    filtered_corpus = filtered_corpus[filtered_corpus["finding_id"].isin(tmp)]
-if f_tema:
-    tmp = df_f[df_f["tema"].isin(f_tema)]["finding_id"].unique()
-    filtered_corpus = filtered_corpus[filtered_corpus["finding_id"].isin(tmp)]
+if aud_subset:
+    filtered_corpus = filtered_corpus[filtered_corpus["aud_code"].isin(aud_subset)]
 
-# NEW: Resumo por AUD (com base no filtro atual)
+# Filtro de risco atua apenas sobre linhas FIND; mantém HEADs dos auds selecionados
+if f_risk:
+    valid_finds = df_f[df_f["risk_filter"].isin(f_risk)]["finding_id"].unique()
+    filtered_corpus = filtered_corpus[
+        ((filtered_corpus["source_type"] == "FIND") & (filtered_corpus["finding_id"].isin(valid_finds))) |
+        ((filtered_corpus["source_type"] == "HEAD"))
+    ]
+
+# ===========================================================
+# Resumo por AUD (com base no filtro atual)
+# ===========================================================
 with st.expander("📊 Resumo de constatações por AUD (filtro atual)"):
     filt_finds = df_f.copy()
-    if f_aud:
-        filt_finds = filt_finds[filt_finds["aud_code"].isin(f_aud)]
-    if f_status:
-        filt_finds = filt_finds[filt_finds["status"].isin(f_status)]
-    if f_tema:
-        filt_finds = filt_finds[filt_finds["tema"].isin(f_tema)]
+    if aud_subset:
+        filt_finds = filt_finds[filt_finds["aud_code"].isin(aud_subset)]
+    if f_risk:
+        filt_finds = filt_finds[filt_finds["risk_filter"].isin(f_risk)]
     cnt = (filt_finds.assign(finding_id=filt_finds["finding_id"].fillna("").astype(str))
            .query("finding_id != ''")
            .groupby("aud_code")["finding_id"].nunique()
@@ -367,6 +379,332 @@ with st.expander("📊 Resumo de constatações por AUD (filtro atual)"):
         st.write("Nenhuma constatação no filtro atual.")
     else:
         st.dataframe(cnt, use_container_width=True)
+
+# ===========================================================
+# NLQ (inteligência mínima) — Intents e helpers
+# ===========================================================
+def _norm_text(s: str) -> str:
+    if s is None: return ""
+    s = str(s)
+    s = unicodedata.normalize('NFKD', s).encode('ASCII', 'ignore').decode('ASCII')
+    return s.lower().strip()
+
+_PT_MONTHS = {
+    "janeiro":1, "fevereiro":2, "marco":3, "março":3, "abril":4, "maio":5, "junho":6,
+    "julho":7, "agosto":8, "setembro":9, "outubro":10, "novembro":11, "dezembro":12
+}
+
+def _extract_years(q: str):
+    return sorted(set(re.findall(r"\b(20[0-3]\d)\b", q)))
+
+def _extract_months(q: str):
+    months = []
+    for name, num in _PT_MONTHS.items():
+        if re.search(rf"\b{name}\b", q):
+            months.append(num)
+    return sorted(set(months))
+
+def _extract_relative_time(q: str):
+    this_month = bool(re.search(r"\b(este|neste|nesse)\s+mes\b", q))
+    this_year = bool(re.search(r"\b(este|neste|nesse)\s+ano\b", q))
+    return this_month, this_year
+
+def _normalize_status_value(s: str):
+    s = _norm_text(s)
+    if not s: return ""
+    if any(k in s for k in ["encerrad","fechad","closed","concluid","implementad","done","aprovad"]): return "encerrado"
+    if "atras" in s or "vencid" in s: return "atrasado"
+    if "andament" in s or "in progress" in s: return "em_andamento"
+    if "abert" in s or "open" in s or "pendente" in s: return "aberto"
+    return s
+
+def _extract_companies(q: str, df_h: pd.DataFrame):
+    qn = _norm_text(q)
+    if "company" not in df_h.columns: return []
+    detected = []
+    for comp in sorted(set(df_h["company"].dropna().astype(str))):
+        cn = _norm_text(comp)
+        if cn and cn in qn:
+            detected.append(comp)
+    return detected
+
+def _extract_risks(q: str, df_f: pd.DataFrame):
+    qn = _norm_text(q)
+    detected = []
+    uniq = sorted(set(df_f["risk_filter"].dropna().astype(str)))
+    for r in uniq:
+        rn = _norm_text(r)
+        if rn and rn in qn:
+            detected.append(r)
+    return detected
+
+def _find_related_auds(question: str, df_h: pd.DataFrame, df_f: pd.DataFrame, corpus: pd.DataFrame, top_k=10, companies=None):
+    # 1) HEADs
+    head_corpus = corpus[corpus["source_type"]=="HEAD"]
+    if not head_corpus.empty:
+        res = search_tf(question, head_corpus, top_k=top_k)
+        auds = res["aud_code"].tolist()
+        seen, ordered = set(), []
+        for a in auds:
+            if a not in seen:
+                ordered.append(a); seen.add(a)
+        if ordered:
+            # Restringe por empresa, se informada
+            if companies and "company" in df_h.columns:
+                valids = set(df_h[df_h["company"].isin(companies)]["aud_code"])
+                ordered = [a for a in ordered if a in valids]
+            return ordered
+
+    # 2) Fallback: constatações
+    tmp = df_f.copy()
+    tmp["__text__"] = (
+        tmp.get("finding_title","").astype(str) + " " +
+        tmp.get("finding_text","").astype(str) + " " +
+        tmp.get("tema","").astype(str) + " " +
+        tmp.get("impact","").astype(str)
+    )
+    tmp_corpus = pd.DataFrame({"text": tmp["__text__"], "aud_code": tmp["aud_code"], "finding_id": tmp["finding_id"]})
+    if tmp_corpus["text"].str.strip().astype(bool).any():
+        res2 = search_tf(question, tmp_corpus, top_k=top_k)
+        auds2 = res2["aud_code"].tolist()
+        seen, ordered2 = set(), []
+        for a in auds2:
+            if a not in seen:
+                ordered2.append(a); seen.add(a)
+        if companies and "company" in df_h.columns:
+            valids = set(df_h[df_h["company"].isin(companies)]["aud_code"])
+            ordered2 = [a for a in ordered2 if a in valids]
+        return ordered2
+    return []
+
+def _apply_year_month_filters(df_head: pd.DataFrame, years: list, months: list, this_month=False, this_year=False):
+    out = df_head.copy()
+    # relativos
+    today = datetime.date.today()
+    if this_year and "ano_filter" in out.columns:
+        out = out[out["ano_filter"].astype(str) == str(today.year)]
+    elif this_year and "emission_date" in out.columns:
+        ed = pd.to_datetime(out["emission_date"], errors="coerce")
+        out = out[ed.dt.year == today.year]
+
+    if this_month and "emission_date" in out.columns:
+        ed = pd.to_datetime(out["emission_date"], errors="coerce")
+        out = out[(ed.dt.year == today.year) & (ed.dt.month == today.month)]
+
+    # absolutos
+    if years:
+        if "ano_filter" in out.columns:
+            out = out[out["ano_filter"].astype(str).isin(years)]
+        elif "emission_date" in out.columns:
+            ed = pd.to_datetime(out["emission_date"], errors="coerce")
+            out = out[ed.dt.year.astype("Int64").astype(str).isin(years)]
+    if months:
+        if "emission_date" in out.columns:
+            ed = pd.to_datetime(out["emission_date"], errors="coerce")
+            out = out[ed.dt.month.isin(months)]
+    return out
+
+# -------- Intents (respostas curtas e naturais) --------
+def _answer_count_recommendations(q, df_h, df_f, corpus):
+    qn = _norm_text(q)
+    yrs = _extract_years(qn); months = _extract_months(qn)
+    this_m, this_y = _extract_relative_time(qn)
+    companies = _extract_companies(q, df_h)
+    risks = _extract_risks(q, df_f)
+
+    auds = _find_related_auds(q, df_h, df_f, corpus, top_k=12, companies=companies)
+    if not auds:
+        return "Não encontrei trabalhos relacionados ao tema da sua pergunta.", None
+    head = _apply_year_month_filters(df_h[df_h["aud_code"].isin(auds)], yrs, months, this_month=this_m, this_year=this_y)
+    if companies and "company" in head.columns:
+        head = head[head["company"].isin(companies)]
+    if head.empty:
+        return "Não encontrei trabalhos para o período solicitado.", None
+
+    auds_final = head["aud_code"].unique().tolist()
+    anos = sorted(set(head["ano_filter"].dropna().astype(str).tolist()))
+    # Reco = constatações com recommendation não vazia
+    df_find = df_f[df_f["aud_code"].isin(auds_final)].copy()
+    if risks:
+        df_find = df_find[df_find["risk_filter"].isin(risks)]
+    df_find["recommendation"] = df_find["recommendation"].fillna("").astype(str).str.strip()
+    total = int((df_find["recommendation"]!="").sum())
+
+    t_trab = "trabalho" if len(auds_final)==1 else "trabalhos"
+    t_rec = "recomendação" if total==1 else "recomendações"
+    anos_txt = f" (anos: {', '.join(anos)})" if anos else ""
+    ans = f"Foram identificados {len(auds_final)} {t_trab}{anos_txt}, com {total} {t_rec} no total."
+    res = search_tf(q, corpus, top_k=12)
+    return ans, res
+
+def _answer_overdue(q, df_h, df_f, corpus):
+    qn = _norm_text(q)
+    yrs = _extract_years(qn); months = _extract_months(qn)
+    this_m, this_y = _extract_relative_time(qn)
+    companies = _extract_companies(q, df_h)
+    risks = _extract_risks(q, df_f)
+
+    auds = _find_related_auds(q, df_h, df_f, corpus, top_k=12, companies=companies)
+    if not auds:
+        return "Não identifiquei trabalhos relacionados ao tema para verificar atrasos.", None
+    head = _apply_year_month_filters(df_h[df_h["aud_code"].isin(auds)], yrs, months, this_month=this_m, this_year=this_y)
+    if companies and "company" in head.columns:
+        head = head[head["company"].isin(companies)]
+    if head.empty:
+        return "Não encontrei trabalhos para o período solicitado.", None
+
+    auds_final = head["aud_code"].unique().tolist()
+
+    today = datetime.date.today()
+    dd = pd.to_datetime(df_f["due_date"], errors="coerce").dt.date if "due_date" in df_f.columns else None
+    status_norm = df_f.get("status","").astype(str).apply(_normalize_status_value)
+    mask_base = df_f["aud_code"].isin(auds_final)
+    mask_due = dd.notna() & (dd < today) if dd is not None else False
+    mask_open = ~status_norm.isin(["encerrado"])
+    mask_risk = df_f["risk_filter"].isin(risks) if risks else True
+    overdue = df_f[mask_base & mask_due & mask_open & mask_risk]
+    n = len(overdue)
+    t = "recomendação" if n==1 else "recomendações"
+    anos = sorted(set(head["ano_filter"].dropna().astype(str).tolist()))
+    anos_txt = f" (anos: {', '.join(anos)})" if anos else ""
+    ans = f"Há {n} {t} em atraso para os trabalhos identificados{anos_txt}."
+    res = search_tf(q, corpus, top_k=12)
+    return ans, res
+
+def _answer_status_breakdown(q, df_h, df_f, corpus):
+    qn = _norm_text(q)
+    yrs = _extract_years(qn); months = _extract_months(qn)
+    this_m, this_y = _extract_relative_time(qn)
+    companies = _extract_companies(q, df_h)
+    risks = _extract_risks(q, df_f)
+
+    auds = _find_related_auds(q, df_h, df_f, corpus, top_k=12, companies=companies)
+    if not auds:
+        return "Não identifiquei trabalhos relacionados ao tema para consolidar status.", None
+    head = _apply_year_month_filters(df_h[df_h["aud_code"].isin(auds)], yrs, months, this_month=this_m, this_year=this_y)
+    if companies and "company" in head.columns:
+        head = head[head["company"].isin(companies)]
+    if head.empty:
+        return "Não encontrei trabalhos para o período solicitado.", None
+
+    auds_final = head["aud_code"].unique().tolist()
+    df_find = df_f[df_f["aud_code"].isin(auds_final)].copy()
+    if risks:
+        df_find = df_find[df_find["risk_filter"].isin(risks)]
+    df_find["__status_norm__"] = df_find.get("status","").astype(str).apply(_normalize_status_value)
+    dist = df_find["__status_norm__"].value_counts().to_dict()
+    if not dist:
+        return "Não há recomendações registradas para esses trabalhos.", None
+
+    parts = []
+    label_map = {"encerrado":"encerradas", "aberto":"em aberto", "em_andamento":"em andamento", "atrasado":"atrasadas"}
+    for k in ["encerrado","em_andamento","aberto","atrasado"]:
+        if k in dist:
+            parts.append(f"{dist[k]} {label_map.get(k,k)}")
+    ans = "Distribuição de status: " + ", ".join(parts) + "."
+    res = search_tf(q, corpus, top_k=12)
+    return ans, res
+
+def _answer_responsibles(q, df_h, df_f, corpus):
+    qn = _norm_text(q)
+    yrs = _extract_years(qn); months = _extract_months(qn)
+    this_m, this_y = _extract_relative_time(qn)
+    companies = _extract_companies(q, df_h)
+    risks = _extract_risks(q, df_f)
+
+    auds = _find_related_auds(q, df_h, df_f, corpus, top_k=12, companies=companies)
+    if not auds:
+        return "Não identifiquei trabalhos relacionados ao tema para listar responsáveis.", None
+    head = _apply_year_month_filters(df_h[df_h["aud_code"].isin(auds)], yrs, months, this_month=this_m, this_year=this_y)
+    if companies and "company" in head.columns:
+        head = head[head["company"].isin(companies)]
+    if head.empty:
+        return "Não encontrei trabalhos para o período solicitado.", None
+
+    auds_final = head["aud_code"].unique().tolist()
+    df_find = df_f[df_f["aud_code"].isin(auds_final)].copy()
+    if risks:
+        df_find = df_find[df_find["risk_filter"].isin(risks)]
+
+    df_find["owner"] = df_find.get("owner","").fillna("").astype(str).str.strip()
+    top = (df_find.query("owner != ''")
+                    .groupby("owner")["finding_id"].nunique()
+                    .reset_index(name="qtd")
+                    .sort_values(["qtd","owner"], ascending=[False, True])
+                    .head(5))
+    if top.empty:
+        return "Não há responsáveis mapeados para esses trabalhos.", None
+    itens = "; ".join([f"{r.owner}: {int(r.qtd)}" for r in top.itertuples(index=False)])
+    ans = f"Principais responsáveis (por nº de recomendações): {itens}."
+    res = search_tf(q, corpus, top_k=12)
+    return ans, res
+
+def _answer_count_trabalhos(q, df_h, df_f, corpus):
+    qn = _norm_text(q)
+    yrs = _extract_years(qn); months = _extract_months(qn)
+    this_m, this_y = _extract_relative_time(qn)
+    companies = _extract_companies(q, df_h)
+
+    auds = _find_related_auds(q, df_h, df_f, corpus, top_k=12, companies=companies)
+    if not auds:
+        return "Não encontrei trabalhos relacionados ao tema da sua pergunta.", None
+    head = _apply_year_month_filters(df_h[df_h["aud_code"].isin(auds)], yrs, months, this_month=this_m, this_year=this_y)
+    if companies and "company" in head.columns:
+        head = head[head["company"].isin(companies)]
+    n = head["aud_code"].nunique()
+    if n == 0: return "Não encontrei trabalhos para o período solicitado.", None
+    anos = sorted(set(head["ano_filter"].dropna().astype(str).tolist()))
+    anos_txt = f" (anos: {', '.join(anos)})" if anos else ""
+    t = "trabalho" if n==1 else "trabalhos"
+    ans = f"Foram identificados {n} {t}{anos_txt}."
+    res = search_tf(q, corpus, top_k=12)
+    return ans, res
+
+def try_natural_answer(question: str, df_h: pd.DataFrame, df_f: pd.DataFrame, corpus: pd.DataFrame):
+    """
+    Router de intents com interpretação mínima + filtros implícitos:
+    - empresa mencionada
+    - risco/categoria mencionado
+    - 'este mês' / 'este ano'
+    """
+    qn = _norm_text(question)
+
+    # Intent: recomendações (quantas)
+    if re.search(r"\bquant(as|idade)\b.*recomendac", qn) or "numero de recomendac" in qn:
+        return _answer_count_recommendations(question, df_h, df_f, corpus)
+
+    # Intent: vencidas/atrasadas
+    if re.search(r"\batrasad|vencid", qn):
+        return _answer_overdue(question, df_h, df_f, corpus)
+
+    # Intent: distribuição por status
+    if re.search(r"\bstatus\b.*\b(distribu|por)\b|\bdistribuicao de status\b", qn):
+        return _answer_status_breakdown(question, df_h, df_f, corpus)
+
+    # Intent: responsáveis
+    if re.search(r"respons[aá]vel", qn) or "owner" in qn or "proprietario" in qn:
+        return _answer_responsibles(question, df_h, df_f, corpus)
+
+    # Intent: quantos trabalhos
+    if re.search(r"\bquant(os|idade)\b.*(trabalh|relat[oó]ri|aud)\b", qn):
+        return _answer_count_trabalhos(question, df_h, df_f, corpus)
+
+    # Fallback: resumo curto do relatório mais relevante
+    head_corpus = corpus[corpus["source_type"]=="HEAD"]
+    if not head_corpus.empty:
+        res = search_tf(question, head_corpus, top_k=1)
+        if len(res):
+            aud = res.iloc[0]["aud_code"]
+            hr = df_h[df_h["aud_code"]==aud].head(1)
+            if len(hr):
+                r0 = hr.iloc[0]
+                cronoi = to_iso(r0.get("cronograma_inicio",""))
+                cronof = to_iso(r0.get("cronograma_final",""))
+                ans = f"O trabalho {aud} trata de {r0.get('title','(sem título)')}. Objetivo: {r0.get('objetivo','')}. Escopo: {r0.get('escopo','')}. Cronograma: início {cronoi} • fim {cronof}."
+                results = search_tf(question, corpus, top_k=12)
+                return ans, results
+
+    return None, None
 
 # ===========================================================
 # Chat
@@ -379,8 +717,14 @@ if "history" not in st.session_state:
 q = st.chat_input("Digite sua pergunta...")
 
 if q:
-    results = search_tf(q, filtered_corpus, top_k=12)
-    answer = build_answer(results)
+    # Resposta natural (intents) + fallback
+    nat_ans, nat_results = try_natural_answer(q, df_h, df_f, filtered_corpus)
+    if nat_ans is not None:
+        answer = nat_ans
+        results = nat_results if nat_results is not None else search_tf(q, filtered_corpus, top_k=8)
+    else:
+        results = search_tf(q, filtered_corpus, top_k=12)
+        answer = build_answer(results)
 
     st.session_state["history"].append(("user", q))
     st.session_state["history"].append(("assistant", answer, results))
@@ -392,7 +736,7 @@ for msg in st.session_state["history"]:
             st.write(msg[1])
     else:
         with st.chat_message("assistant"):
-            st.write(msg[1])
+            st.write(msg[1])  # resposta curta e natural sempre que possível
             st.markdown("**Trechos utilizados:**")
             for _, r in msg[2].iterrows():
                 tag = f"[{r['aud_code']} – {r['finding_id']}]"
@@ -433,17 +777,12 @@ def export_pdf(text):
 
 def export_pdf_detailed(df_h, df_f, results_df, logo_bytes=None):
     """Export detalhado com tabelas e quebras por AUD (baseado nos resultados mais recentes)."""
-    # Coleta findings únicos por (aud_code, finding_id) presentes nos resultados
     res_finds = results_df[results_df["source_type"]=="FIND"][["aud_code","finding_id"]].drop_duplicates()
-    # Se vazio, cria um PDF básico
     if res_finds.empty:
         return export_pdf("Nenhuma constatação no resultado atual para exportar.")
 
-    # Mapeia para registros completos em df_f
     key = pd.MultiIndex.from_frame(res_finds)
     aux = df_f.set_index(["aud_code","finding_id"]).loc[key].reset_index()
-
-    # Ordena por aud_code
     aux = aux.sort_values(["aud_code","status","finding_id"], na_position="last")
 
     buf = io.BytesIO()
@@ -458,7 +797,6 @@ def export_pdf_detailed(df_h, df_f, results_df, logo_bytes=None):
 
     story = []
 
-    # Capa simples
     if logo_bytes:
         story.append(RLImage(io.BytesIO(logo_bytes), width=180, height=48))
         story.append(Spacer(1, 12))
@@ -467,15 +805,14 @@ def export_pdf_detailed(df_h, df_f, results_df, logo_bytes=None):
     story.append(Paragraph(datetime.datetime.now().strftime("%d/%m/%Y %H:%M"), normal))
     story.append(PageBreak())
 
-    # Por AUD
     for aud, df_aud in aux.groupby("aud_code", sort=False):
         story.append(Paragraph(f"Relatório: {aud}", h2_style))
-        # Puxa resumo do head se existir
         head_row = df_h[df_h["aud_code"]==aud].head(1)
         if len(head_row):
             hr = head_row.iloc[0]
             resumo = [
                 f"<b>Título:</b> {hr.get('title','')}",
+                f"<b>Empresa:</b> {hr.get('company','')}",
                 f"<b>Objetivo:</b> {hr.get('objetivo','')}",
                 f"<b>Escopo:</b> {hr.get('escopo','')}",
                 f"<b>Riscos:</b> {hr.get('risco_processo','')}",
@@ -486,7 +823,6 @@ def export_pdf_detailed(df_h, df_f, results_df, logo_bytes=None):
                 story.append(Paragraph(line, normal))
             story.append(Spacer(1, 6))
 
-        # Tabela de findings
         tbl_data = [
             ["Finding ID", "Título", "Impacto (priorizado)", "Recomendação", "Status", "Responsável", "Prazo"]
         ]
@@ -514,7 +850,6 @@ def export_pdf_detailed(df_h, df_f, results_df, logo_bytes=None):
         story.append(table)
         story.append(Spacer(1, 8))
 
-        # Texto detalhado de cada finding (quebra leve entre eles)
         for _, r in df_aud.iterrows():
             story.append(Paragraph(f"<b>[{aud} – {r.get('finding_id','')}] {r.get('finding_title','')}</b>", normal))
             ftext = str(r.get("finding_text","") or "")
@@ -531,9 +866,7 @@ def export_pdf_detailed(df_h, df_f, results_df, logo_bytes=None):
 def export_docx(text):
     """Export simples (texto corrido)"""
     doc = Document()
-    # Logo (opcional)
     if logo_bytes:
-        # python-docx aceita stream em BytesIO
         img_stream = io.BytesIO(logo_bytes)
         try:
             doc.add_picture(img_stream, width=Inches(2.2))
@@ -550,7 +883,6 @@ def export_docx_detailed(df_h, df_f, results_df, logo_bytes=None):
     """Export detalhado com tabelas e quebras por AUD (baseado nos resultados mais recentes)."""
     res_finds = results_df[results_df["source_type"]=="FIND"][["aud_code","finding_id"]].drop_duplicates()
     if res_finds.empty:
-        # fallback: export simples informando ausência
         d = Document()
         d.add_heading("Neoenergia — Q&A (Export Detalhado)", level=1)
         d.add_paragraph("Nenhuma constatação no resultado atual para exportar.")
@@ -584,13 +916,13 @@ def export_docx_detailed(df_h, df_f, results_df, logo_bytes=None):
         if len(head_row):
             hr = head_row.iloc[0]
             d.add_paragraph(f"Título: {hr.get('title','')}")
+            d.add_paragraph(f"Empresa: {hr.get('company','')}")
             d.add_paragraph(f"Objetivo: {hr.get('objetivo','')}")
             d.add_paragraph(f"Escopo: {hr.get('escopo','')}")
             d.add_paragraph(f"Riscos: {hr.get('risco_processo','')}")
             d.add_paragraph(f"Alcance: {hr.get('alcance','')}")
             d.add_paragraph(f"Cronograma: início {to_iso(hr.get('cronograma_inicio',''))} • fim {to_iso(hr.get('cronograma_final',''))}")
 
-        # Tabela
         table = d.add_table(rows=1, cols=7)
         hdr_cells = table.rows[0].cells
         hdr_cells[0].text = "Finding ID"
@@ -611,7 +943,6 @@ def export_docx_detailed(df_h, df_f, results_df, logo_bytes=None):
             row_cells[5].text = str(r.get("owner",""))
             row_cells[6].text = to_iso(r.get("due_date",""))
 
-        # Texto detalhado por finding
         for _, r in df_aud.iterrows():
             d.add_paragraph(f"[{aud} – {r.get('finding_id','')}] {r.get('finding_title','')}", style="List Bullet")
             ftext = str(r.get("finding_text","") or "")
