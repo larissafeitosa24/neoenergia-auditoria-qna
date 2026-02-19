@@ -18,9 +18,9 @@ import base64
 # ===========================================================
 # 🔧 CONFIGURAÇÃO FIXA — ALTERE SÓ AQUI
 # ===========================================================
-HEAD_URL = "https://github.com/larissafeitosa24/neoenergia-auditoria-qna/relatorios.csv"
-FIND_URL = "https://github.com/larissafeitosa24/neoenergia-auditoria-qna/constatacoes.csv"
-LOGO_URL = "https://github.com/larissafeitosa24/neoenergia-auditoria-qna/neo_logo.png"
+HEAD_URL = "https://raw.githubusercontent.com/larissafeitosa24/neoenergia-auditoria-qna/main/relatorios.csv"
+FIND_URL = "https://raw.githubusercontent.com/larissafeitosa24/neoenergia-auditoria-qna/main/constatacoes.csv"
+LOGO_URL = "https://raw.githubusercontent.com/larissafeitosa24/neoenergia-auditoria-qna/main/neo_logo.png"
 # ===========================================================
 
 NEO_GREEN = "#7CC04B"
@@ -309,3 +309,4 @@ with col2:
     if st.button("⬇️ Exportar Word", disabled=(last_answer is None)):
         docx = export_docx(last_answer)
         st.download_button("Baixar DOCX", docx, "neoenergia_qa.docx")
+
