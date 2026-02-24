@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
-import streamlit as st
+import io
+import re
+import math
+import datetime
+import unicodedata
+import requests
 import pandas as pd
-import requests, io, re, math, datetime, unicodedata
+import streamlit as st
+from typing import Optional, List
 from dateutil.parser import parse as date_parse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -63,7 +69,7 @@ def load_csv(url: str) -> pd.DataFrame:
     return pd.read_csv(io.StringIO(data))
 
 @st.cache_data(show_spinner=False, ttl=1800)
-def load_logo(url: str) -> bytes | None:
+def load_logo(url: str) -> Optional[bytes]:
     try:
         r = requests.get(url, timeout=15)
         r.raise_for_status()
@@ -77,10 +83,9 @@ def to_iso(v) -> str:
     except Exception:
         return ""
 
-def chunk(s: str, max_chars=1000):
+def chunk(s: str, max_chars=1000) -> List[str]:
     if not isinstance(s, str): return []
     if len(s) <= max_chars: return [s]
-    # divide por sentenças
     parts = re.split(r"(?<=[.!?])\s+", s.strip())
     out, buf = [], ""
     for p in parts:
@@ -104,7 +109,7 @@ def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
     df.columns = [_normalize_col(c) for c in df.columns]
     return df
 
-def ensure_col(df: pd.DataFrame, new_name: str, candidates: list[str], default="") -> pd.DataFrame:
+def ensure_col(df: pd.DataFrame, new_name: str, candidates: List[str], default="") -> pd.DataFrame:
     """Cria df[new_name] copiando a 1ª coluna existente em 'candidates'. Se não houver, cria com default."""
     df = df.copy()
     for c in candidates:
@@ -172,7 +177,7 @@ def build_corpus(dfh: pd.DataFrame, dff: pd.DataFrame) -> pd.DataFrame:
 
     return pd.DataFrame(rows)
 
-def search_tf(question: str, corpus: pd.DataFrame, top_k: int):
+def search_tf(question: str, corpus: pd.DataFrame, top_k: int) -> pd.DataFrame:
     vect = TfidfVectorizer(strip_accents="unicode", ngram_range=(1,2))
     M = vect.fit_transform(corpus["text"])
     qv = vect.transform([question])
@@ -242,7 +247,7 @@ elif "emission_date" in df_h.columns:
 else:
     df_h["ano_filter"] = ""
 
-# FINDINGS: montar campos canônicos (considerando variações do seu CSV)
+# FINDINGS: canônicos (variações mapeadas do seu CSV)
 # aud_code derivado de id_do_trabalho, se necessário
 if "aud_code" not in df_f.columns:
     df_f = ensure_col(df_f, "aud_code", ["id_do_trabalho"], default="")
@@ -352,8 +357,8 @@ _PT_MONTHS = {
     "janeiro":1, "fevereiro":2, "marco":3, "março":3, "abril":4, "maio":5, "junho":6,
     "julho":7, "agosto":8, "setembro":9, "outubro":10, "novembro":11, "dezembro":12
 }
-def _extract_years(q: str):  return sorted(set(re.findall(r"\b(20[0-3]\d)\b", q)))
-def _extract_months(q: str):
+def _extract_years(q: str) -> List[str]:  return sorted(set(re.findall(r"\b(20[0-3]\d)\b", q)))
+def _extract_months(q: str) -> List[int]:
     months = []
     for name, num in _PT_MONTHS.items():
         if re.search(rf"\b{name}\b", q):
@@ -374,7 +379,7 @@ def _normalize_status_value(s: str):
     if "abert" in s or "open" in s or "pendente" in s: return "aberto"
     return s
 
-def _extract_companies(q: str, df_head: pd.DataFrame):
+def _extract_companies(q: str, df_head: pd.DataFrame) -> List[str]:
     qn = _norm_text(q)
     if "company" not in df_head.columns: return []
     detected = []
@@ -383,7 +388,7 @@ def _extract_companies(q: str, df_head: pd.DataFrame):
             detected.append(comp)
     return detected
 
-def _extract_risks(q: str, df_find: pd.DataFrame):
+def _extract_risks(q: str, df_find: pd.DataFrame) -> List[str]:
     qn = _norm_text(q)
     detected = []
     uniq = sorted(set(df_find["risk_filter"].dropna().astype(str)))
@@ -393,7 +398,7 @@ def _extract_risks(q: str, df_find: pd.DataFrame):
     return detected
 
 def _find_related_auds(question: str, df_head: pd.DataFrame, df_find: pd.DataFrame, _corpus: pd.DataFrame,
-                       top_k=10, companies=None):
+                       top_k=10, companies: Optional[List[str]]=None) -> List[str]:
     head_corpus = _corpus[_corpus["source_type"]=="HEAD"]
     if not head_corpus.empty:
         res = search_tf(question, head_corpus, top_k=top_k)
@@ -429,7 +434,8 @@ def _find_related_auds(question: str, df_head: pd.DataFrame, df_find: pd.DataFra
         return ordered2
     return []
 
-def _apply_year_month_filters(df_head: pd.DataFrame, years: list, months: list, this_month=False, this_year=False):
+def _apply_year_month_filters(df_head: pd.DataFrame, years: List[str], months: List[int],
+                              this_month=False, this_year=False) -> pd.DataFrame:
     out = df_head.copy()
     today = datetime.date.today()
     if this_year and "ano_filter" in out.columns:
@@ -456,7 +462,9 @@ def _apply_year_month_filters(df_head: pd.DataFrame, years: list, months: list, 
 # ===========================================================
 # Respostas EXECUTIVAS (templates + intents novos)
 # ===========================================================
-def exec_response(title: str, resumo: str, detalhes: list[str] | None = None, fonte: str | None = None):
+def exec_response(title: str, resumo: str,
+                  detalhes: Optional[List[str]] = None,
+                  fonte: Optional[str] = None) -> str:
     txt = f"### {title}\n\n**{resumo}**\n\n"
     if detalhes:
         txt += "#### 📌 Detalhes\n"
@@ -470,7 +478,8 @@ def exec_response(title: str, resumo: str, detalhes: list[str] | None = None, fo
 # 1) relatórios por ano
 def _exec_count_reports_by_year(q: str, df_head: pd.DataFrame):
     anos = re.findall(r"(20\d{2})", q)
-    if not anos: return None
+    if not anos:
+        return None
     ano = anos[0]
     if "ano_filter" in df_head.columns:
         count = int((df_head["ano_filter"].astype(str) == ano).sum())
@@ -486,16 +495,16 @@ def _exec_count_reports_by_year(q: str, df_head: pd.DataFrame):
 
 # 2) recomendações por nome do relatório
 def _exec_count_recs_by_report_name(q: str, df_head: pd.DataFrame, df_find: pd.DataFrame):
-    # capturar o nome após 'trabalho' ou 'relatório' (ou qualquer termo restante)
     m = re.search(r"(?:trabalho|relat[oó]rio)\s+(.+)", _norm_text(q))
-    if not m: return None
+    if not m:
+        return None
     name = m.group(1).strip()
     match = df_head[df_head["title"].str.lower().str.contains(name)]
     if match.empty:
-        return (f"Não encontrei relatório com nome semelhante a '{name}'.", None)
+        return "Não encontrei relatório com nome semelhante a '{}'.".format(name), None
     auds = match["aud_code"].tolist()
     rec_count = int(df_find[df_find["aud_code"].isin(auds)]["finding_id"].nunique())
-    detalhes = [f"AUD(s): {', '.join(auds[:8])}{'…' if len(auds)>8 else ''}"]
+    detalhes = ["AUD(s): {}{}".format(", ".join(auds[:8]), "…" if len(auds)>8 else "")]
     return exec_response(
         "📌 Contagem de recomendações",
         f"O relatório **{match.iloc[0]['title']}** possui **{rec_count} recomendações/constatações**.",
@@ -508,8 +517,11 @@ def _exec_report_with_most_findings(df_find: pd.DataFrame, df_head: pd.DataFrame
     counts = (df_find[df_find["finding_id"]!=""]
               .groupby("aud_code")["finding_id"].nunique()
               .reset_index(name="qtd").sort_values("qtd", ascending=False))
-    if counts.empty: return ("Não há constatações registradas.", None)
-    top = counts.iloc[0]; aud = top["aud_code"]; qtd = int(top["qtd"])
+    if counts.empty:
+        return "Não há constatações registradas.", None
+    top = counts.iloc[0]
+    aud = top["aud_code"]
+    qtd = int(top["qtd"])
     title = df_head[df_head["aud_code"]==aud]["title"].astype(str).head(1).fillna("(sem título)").iloc[0]
     return exec_response(
         "🏆 Relatório com mais constatações",
@@ -523,7 +535,7 @@ def _exec_repeated_reports(df_head: pd.DataFrame):
     g = df_head.groupby("title")["ano_filter"].nunique().reset_index()
     rep = g[g["ano_filter"] > 1]
     if rep.empty:
-        return ("Não houve repetição de trabalhos entre os anos analisados.", None)
+        return "Não houve repetição de trabalhos entre os anos analisados.", None
     linhas = []
     for _, r in rep.iterrows():
         anos = df_head[df_head["title"]==r["title"]]["ano_filter"].astype(str).unique().tolist()
@@ -540,9 +552,10 @@ def _exec_repeated_reports(df_head: pd.DataFrame):
 def _exec_company_with_most_findings(df_head: pd.DataFrame, df_find: pd.DataFrame):
     merged = df_find[df_find["finding_id"]!=""].merge(df_head[["aud_code","company"]], on="aud_code", how="left")
     g = merged.groupby("company")["finding_id"].nunique().reset_index(name="qtd").sort_values("qtd", ascending=False)
-    if g.empty: return ("Não há constatações registradas.", None)
+    if g.empty:
+        return "Não há constatações registradas.", None
     top = g.iloc[0]
-    det = [", ".join([f"{r.company} ({int(r.qtd)})" for r in g.head(5).itertuples(index=False)])]
+    det = [", ".join(["{} ({})".format(r.company, int(r.qtd)) for r in g.head(5).itertuples(index=False)])]
     return exec_response(
         "🏢 Empresa mais impactada",
         f"A empresa com mais constatações é **{top['company']}** com **{int(top['qtd'])} achados**.",
@@ -555,9 +568,10 @@ def _exec_top_risks(df_find: pd.DataFrame):
     g = (df_find[df_find["risk_filter"]!=""]
          .groupby("risk_filter")["finding_id"].nunique()
          .reset_index(name="qtd").sort_values("qtd", ascending=False))
-    if g.empty: return ("Não há riscos recorrentes mapeados.", None)
+    if g.empty:
+        return "Não há riscos recorrentes mapeados.", None
     top = g.iloc[0]
-    det = [", ".join([f"{r.risk_filter} ({int(r.qtd)})" for r in g.head(5).itertuples(index=False)])]
+    det = [", ".join(["{} ({})".format(r.risk_filter, int(r.qtd)) for r in g.head(5).itertuples(index=False)])]
     return exec_response(
         "⚠️ Riscos mais recorrentes",
         f"O risco mais recorrente é **{top['risk_filter']}**, com **{int(top['qtd'])} constatações**.",
@@ -570,7 +584,8 @@ def _exec_global_status(df_find: pd.DataFrame):
     df = df_find.copy()
     df["__status_norm__"] = df.get("status","").astype(str).apply(_normalize_status_value)
     dist = df["__status_norm__"].value_counts().to_dict()
-    if not dist: return ("Não há recomendações mapeadas no CSV.", None)
+    if not dist:
+        return "Não há recomendações mapeadas no CSV.", None
     detalhes = [
         f"{dist.get('encerrado',0)} encerradas",
         f"{dist.get('em_andamento',0)} em andamento",
@@ -586,13 +601,15 @@ def _exec_global_status(df_find: pd.DataFrame):
 
 # 8) tempo médio de execução dos trabalhos
 def _exec_average_report_duration(df_head: pd.DataFrame):
-    if not {"cronograma_inicio","cronograma_final"} <= set(df_head.columns): return None
+    if not {"cronograma_inicio","cronograma_final"} <= set(df_head.columns):
+        return None
     df = df_head.copy()
     df["dt_i"] = pd.to_datetime(df["cronograma_inicio"], errors="coerce")
     df["dt_f"] = pd.to_datetime(df["cronograma_final"], errors="coerce")
     df["dur"]  = (df["dt_f"] - df["dt_i"]).dt.days
     avg = df["dur"].dropna().mean()
-    if not pd.notnull(avg): return None
+    if not pd.notnull(avg):
+        return None
     det = [f"Menor duração: {int(df['dur'].min())} dias", f"Maior duração: {int(df['dur'].max())} dias"]
     return exec_response(
         "⏱️ Tempo médio de execução",
@@ -606,7 +623,8 @@ def _exec_top_critical_reports(df_find: pd.DataFrame, df_head: pd.DataFrame):
     g = (df_find[df_find["finding_id"]!=""]
          .groupby("aud_code")["finding_id"].nunique()
          .reset_index(name="qtd").sort_values("qtd", ascending=False).head(5))
-    if g.empty: return ("Não há dados para ranking de relatórios críticos.", None)
+    if g.empty:
+        return "Não há dados para ranking de relatórios críticos.", None
     detalhes = []
     for r in g.itertuples(index=False):
         title = df_head[df_head["aud_code"]==r.aud_code]["title"].astype(str).head(1).fillna("(sem título)").iloc[0]
@@ -618,7 +636,7 @@ def _exec_top_critical_reports(df_find: pd.DataFrame, df_head: pd.DataFrame):
         "constatacoes.csv + relatorios.csv"
     ), None
 
-# ------------------- Intents anteriores (resumo) -------------------
+# ------------------- Intents anteriores (operacionais) -------------------
 def _answer_count_recommendations(q, df_hh, df_ff, _corpus):
     qn = _norm_text(q)
     yrs = _extract_years(qn); months = _extract_months(qn)
@@ -764,7 +782,8 @@ def _answer_count_trabalhos(q, df_hh, df_ff, _corpus):
     if companies and "company" in head.columns:
         head = head[head["company"].isin(companies)]
     n = head["aud_code"].nunique()
-    if n == 0: return "Não encontrei trabalhos para o período solicitado.", None
+    if n == 0:
+        return "Não encontrei trabalhos para o período solicitado.", None
     anos = sorted(set(head["ano_filter"].dropna().astype(str).tolist()))
     anos_txt = f" (anos: {', '.join(anos)})" if anos else ""
     t = "trabalho" if n==1 else "trabalhos"
@@ -808,43 +827,66 @@ def _answer_list_trabalhos(q, df_hh, df_ff, _corpus):
     results = search_tf(q, _corpus, top_k=12)
     return ans, results
 
-# ---------- Router principal (com intents EXEC + intents anteriores) ----------
+# ---------- Router principal (EXEC + operacionais) ----------
 def try_natural_answer(question: str, df_head: pd.DataFrame, df_find: pd.DataFrame, _corpus: pd.DataFrame):
     q = _norm_text(question)
 
-    # EXEC — alta gestão
-    ans = _exec_count_reports_by_year(q, df_head);            if ans: return ans
-    ans = _exec_count_recs_by_report_name(q, df_head, df_find);  if ans: return ans
+    # -------- INTENTS EXEC --------
+    ans = _exec_count_reports_by_year(q, df_head)
+    if ans:
+        return ans
+
+    ans = _exec_count_recs_by_report_name(q, df_head, df_find)
+    if ans:
+        return ans
+
     if "mais pontos" in q or "mais constatacao" in q or "mais achado" in q:
         return _exec_report_with_most_findings(df_find, df_head)
+
     if "repeticao" in q or "repetição" in q or "repetidos" in q:
         return _exec_repeated_reports(df_head)
+
     if "empresa" in q and "mais" in q and ("constat" in q or "achad" in q):
         return _exec_company_with_most_findings(df_head, df_find)
+
     if "riscos mais" in q or ("mais" in q and "risco" in q):
         return _exec_top_risks(df_find)
+
     if "status geral" in q or ("distribuicao" in q and "status" in q):
         return _exec_global_status(df_find)
+
     if "tempo medio" in q or "duracao media" in q:
         return _exec_average_report_duration(df_head)
+
     if "relatorios criticos" in q or ("mais criticos" in q):
         return _exec_top_critical_reports(df_find, df_head)
 
-    # Intents anteriores (operacionais)
+    # -------- INTENTS OPERACIONAIS --------
     ans, res = _answer_count_recommendations(question, df_head, df_find, _corpus)
-    if ans: return ans, res
-    ans, res = _answer_overdue(question, df_head, df_find, _corpus)
-    if ans: return ans, res
-    ans, res = _answer_status_breakdown(question, df_head, df_find, _corpus)
-    if ans: return ans, res
-    ans, res = _answer_responsibles(question, df_head, df_find, _corpus)
-    if ans: return ans, res
-    ans, res = _answer_count_trabalhos(question, df_head, df_find, _corpus)
-    if ans: return ans, res
-    ans, res = _answer_list_trabalhos(question, df_head, df_find, _corpus)
-    if ans: return ans, res
+    if ans:
+        return ans, res
 
-    # Fallback semântico: resumo do head mais relevante
+    ans, res = _answer_overdue(question, df_head, df_find, _corpus)
+    if ans:
+        return ans, res
+
+    ans, res = _answer_status_breakdown(question, df_head, df_find, _corpus)
+    if ans:
+        return ans, res
+
+    ans, res = _answer_responsibles(question, df_head, df_find, _corpus)
+    if ans:
+        return ans, res
+
+    ans, res = _answer_count_trabalhos(question, df_head, df_find, _corpus)
+    if ans:
+        return ans, res
+
+    ans, res = _answer_list_trabalhos(question, df_head, df_find, _corpus)
+    if ans:
+        return ans, res
+
+    # -------- FALLBACK SEMÂNTICO --------
     head_corpus = _corpus[_corpus["source_type"]=="HEAD"]
     if not head_corpus.empty:
         res = search_tf(question, head_corpus, top_k=1)
