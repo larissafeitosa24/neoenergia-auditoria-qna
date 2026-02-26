@@ -1,8 +1,3 @@
-streamlit
-pandas
-python-dateutil
-requests
-scikit-learn
-python-docx
-reportlab
-pillow
+openai 
+os
+
