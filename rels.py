@@ -40,7 +40,7 @@ NEO_BLUE  = "#0060A9"
 NEO_DARK  = "#014e87"
 
 # Modelo OpenAI (troque se quiser)
-DEFAULT_MODEL = "gpt-4.1"
+DEFAULT_MODEL = "gpt-4o-mini"
 
 st.set_page_config(
     page_title="Neoenergia • Consulta Relatórios de Auditoria",
@@ -673,3 +673,4 @@ with col4:
     if st.button("⬇️ Exportar Word detalhado", disabled=(last_results is None)):
         docxd = export_docx_detailed(df_h, df_f, last_results, logo_bytes=logo_bytes)
         st.download_button("Baixar DOCX detalhado", docxd, "neoenergia_qa_detalhado.docx")
+
