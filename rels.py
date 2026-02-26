@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import io
 import re
-import math
 import datetime
 import unicodedata
 import requests
 import pandas as pd
 import streamlit as st
 from typing import Optional, List
+
 from dateutil.parser import parse as date_parse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -196,20 +196,15 @@ def build_corpus(dfh: pd.DataFrame, dff: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 def search_tf(question: str, corpus: pd.DataFrame, top_k: int) -> pd.DataFrame:
+    if corpus is None or corpus.empty:
+        return pd.DataFrame(columns=["source_type", "aud_code", "finding_id", "text", "score"])
     vect = TfidfVectorizer(strip_accents="unicode", ngram_range=(1, 2))
-    M = vect.fit_transform(corpus["text"])
+    M = vect.fit_transform(corpus["text"].fillna("").astype(str))
     qv = vect.transform([question])
     sim = cosine_similarity(qv, M).flatten()
     out = corpus.copy()
     out["score"] = sim
     return out.sort_values("score", ascending=False).head(top_k)
-
-def _counts_by_aud_in_results(contexts_df: pd.DataFrame) -> pd.DataFrame:
-    finds = contexts_df[contexts_df["source_type"] == "FIND"].copy()
-    if finds.empty:
-        return pd.DataFrame(columns=["aud_code", "qtd_findings"])
-    g = finds.groupby("aud_code")["finding_id"].nunique().reset_index(name="qtd_findings")
-    return g.sort_values(["qtd_findings", "aud_code"], ascending=[False, True])
 
 # ===========================================================
 # OpenAI RAG helpers
@@ -229,10 +224,31 @@ def format_context(results_df: pd.DataFrame, max_chars_total: int = 9000) -> str
         total += len(chunk_txt)
     return "\n---\n".join(parts)
 
+def _safe_output_text(resp) -> str:
+    # OpenAI SDK geralmente expõe resp.output_text, mas deixo fallback.
+    txt = getattr(resp, "output_text", None)
+    if isinstance(txt, str) and txt.strip():
+        return txt.strip()
+
+    # fallback: tenta vasculhar estrutura (pode variar por versão)
+    try:
+        if hasattr(resp, "output") and resp.output:
+            # procura primeiro texto
+            for item in resp.output:
+                if getattr(item, "content", None):
+                    for c in item.content:
+                        t = getattr(c, "text", None)
+                        if isinstance(t, str) and t.strip():
+                            return t.strip()
+    except Exception:
+        pass
+
+    return str(resp)
+
 def openai_answer(question: str, results_df: pd.DataFrame) -> str:
     api_key = st.secrets.get("OPENAI_API_KEY", "").strip()
     if not api_key:
-        return "❌ OPENAI_API_KEY não encontrada no Secrets."
+        return "❌ **OPENAI_API_KEY** não encontrada em **Settings → Secrets** do Streamlit Cloud."
 
     context = format_context(results_df, max_chars_total=9000)
     if not context.strip():
@@ -245,25 +261,34 @@ def openai_answer(question: str, results_df: pd.DataFrame) -> str:
         "Use APENAS o CONTEXTO fornecido (trechos dos CSVs do GitHub).\n"
         "Se a resposta não estiver no contexto, diga claramente que não encontrou nos arquivos.\n"
         "Sempre que possível, cite as tags [HEAD|FIND ...] que sustentam cada afirmação.\n"
-        "Se pedirem números/quantidades, explique o critério com base no contexto."
+        "Se pedirem números/quantidades, explique o critério de contagem com base no contexto.\n"
+        "Se houver ambiguidade, peça para o usuário especificar (ex.: qual AUD, ano, empresa)."
     )
-
     user = f"PERGUNTA:\n{question}\n\nCONTEXTO:\n{context}"
 
     try:
         resp = client.responses.create(
-            model=DEFAULT_MODEL,  # ex: "gpt-4o-mini"
+            model=DEFAULT_MODEL,
             input=[
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
             ],
             temperature=0.2,
+            store=False,
         )
-        return (resp.output_text or "").strip()
+        return _safe_output_text(resp)
 
     except Exception as e:
-        # mostra o erro na tela (sem precisar de log)
-        return f"🔥 ERRO OPENAI: {type(e).__name__}: {e}"
+        # deixa a mensagem bem útil sem precisar de log do Streamlit
+        return (
+            "🔥 **Erro ao chamar a OpenAI**.\n\n"
+            f"Detalhes: `{type(e).__name__}: {str(e)}`\n\n"
+            "Checklist rápido:\n"
+            "- Confirme se o secret `OPENAI_API_KEY` está salvo e sem espaços.\n"
+            "- Confirme se o pacote `openai` está no `requirements.txt`.\n"
+            "- Troque temporariamente o modelo (ex.: `gpt-4o-mini`) se o seu não estiver disponível.\n"
+        )
+
 # ===========================================================
 # Carregar dados
 # ===========================================================
@@ -413,7 +438,7 @@ with st.expander("📊 Resumo de constatações por AUD (no filtro atual)"):
         st.dataframe(cnt, use_container_width=True)
 
 # ===========================================================
-# Chat (OpenAI RAG) — usa o filtered_corpus e responde via OpenAI
+# Chat (OpenAI RAG)
 # ===========================================================
 st.subheader("💬 Pergunte sobre os relatórios (OpenAI)")
 show_sources = st.checkbox("Mostrar fontes (trechos)", value=False)
@@ -424,11 +449,9 @@ if "history" not in st.session_state:
 q = st.chat_input("Digite sua pergunta...")
 
 if q:
-    # 1) Recupera trechos mais relevantes do corpus filtrado
-    results = search_tf(q, filtered_corpus, top_k=12)
-
-    # 2) Modelo responde baseado nos trechos recuperados
-    answer = openai_answer(q, results)
+    with st.spinner("Buscando trechos relevantes e consultando o modelo..."):
+        results = search_tf(q, filtered_corpus, top_k=12)
+        answer = openai_answer(q, results)
 
     st.session_state["history"].append(("user", q))
     st.session_state["history"].append(("assistant", answer, results))
@@ -441,7 +464,7 @@ for msg in st.session_state["history"]:
         with st.chat_message("assistant"):
             st.write(msg[1])
 
-            if show_sources:
+            if show_sources and msg[2] is not None and not msg[2].empty:
                 st.markdown("**Trechos utilizados (contexto enviado ao modelo):**")
                 for _, r in msg[2].iterrows():
                     tag = f"[{r.get('source_type','')} | {r.get('aud_code','')} – {r.get('finding_id','')}]"
@@ -466,7 +489,7 @@ def export_pdf(text):
     c.drawString(40, y, "Neoenergia — Q&A de Relatórios")
     y -= 20
     c.setFont("Helvetica", 10)
-    for line in text.split("\n"):
+    for line in str(text or "").split("\n"):
         if y < 50:
             c.showPage()
             y = H - 50
@@ -566,7 +589,7 @@ def export_docx(text):
         except Exception:
             pass
     doc.add_heading("Neoenergia — Q&A de Relatórios", level=1)
-    for line in text.split("\n"):
+    for line in str(text or "").split("\n"):
         doc.add_paragraph(re.sub(r"\*\*|_", "", line))
     out = io.BytesIO()
     doc.save(out)
@@ -611,9 +634,7 @@ def export_docx_detailed(df_head, df_find, results_df, logo_bytes=None):
             d.add_paragraph(f"Escopo: {hr.get('escopo','')}")
             d.add_paragraph(f"Riscos: {hr.get('risco_processo','')}")
             d.add_paragraph(f"Alcance: {hr.get('alcance','')}")
-            d.add_paragraph(
-                f"Cronograma: início {to_iso(hr.get('cronograma_inicio',''))} • fim {to_iso(hr.get('cronograma_final',''))}"
-            )
+            d.add_paragraph(f"Cronograma: início {to_iso(hr.get('cronograma_inicio',''))} • fim {to_iso(hr.get('cronograma_final',''))}")
 
         table = d.add_table(rows=1, cols=7)
         hdr_cells = table.rows[0].cells
@@ -671,6 +692,3 @@ with col4:
     if st.button("⬇️ Exportar Word detalhado", disabled=(last_results is None)):
         docxd = export_docx_detailed(df_h, df_f, last_results, logo_bytes=logo_bytes)
         st.download_button("Baixar DOCX detalhado", docxd, "neoenergia_qa_detalhado.docx")
-
-
-
