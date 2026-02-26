@@ -236,26 +236,6 @@ def openai_answer(question: str, results_df: pd.DataFrame) -> str:
 
     context = format_context(results_df, max_chars_total=9000)
     if not context.strip():
-        return "Nenhum contexto relevante encontrado."
-
-    client = OpenAI(api_key=api_key)
-
-    try:
-        resp = client.responses.create(
-            model=DEFAULT_MODEL,
-            input=[
-                {"role": "system", "content": "Responda usando apenas o contexto fornecido."},
-                {"role": "user", "content": f"Pergunta:\n{question}\n\nContexto:\n{context}"},
-            ],
-            temperature=0.2,
-        )
-        return resp.output_text
-
-    except Exception as e:
-        return f"🔥 ERRO OPENAI: {str(e)}"
-
-    context = format_context(results_df, max_chars_total=9000)
-    if not context.strip():
         return "Não encontrei trechos relevantes nos CSVs para responder com segurança."
 
     client = OpenAI(api_key=api_key)
@@ -265,23 +245,25 @@ def openai_answer(question: str, results_df: pd.DataFrame) -> str:
         "Use APENAS o CONTEXTO fornecido (trechos dos CSVs do GitHub).\n"
         "Se a resposta não estiver no contexto, diga claramente que não encontrou nos arquivos.\n"
         "Sempre que possível, cite as tags [HEAD|FIND ...] que sustentam cada afirmação.\n"
-        "Se pedirem números/quantidades, explique o critério de contagem com base no contexto."
+        "Se pedirem números/quantidades, explique o critério com base no contexto."
     )
 
     user = f"PERGUNTA:\n{question}\n\nCONTEXTO:\n{context}"
 
-    resp = client.responses.create(
-        model=DEFAULT_MODEL,
-        input=[
-            {"role": "system", "content": system},
-            {"role": "user", "content": user},
-        ],
-        temperature=0.2,
-        store=False,
-    )
+    try:
+        resp = client.responses.create(
+            model=DEFAULT_MODEL,  # ex: "gpt-4o-mini"
+            input=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+            temperature=0.2,
+        )
+        return (resp.output_text or "").strip()
 
-    return (resp.output_text or "").strip()
-
+    except Exception as e:
+        # mostra o erro na tela (sem precisar de log)
+        return f"🔥 ERRO OPENAI: {type(e).__name__}: {e}"
 # ===========================================================
 # Carregar dados
 # ===========================================================
@@ -689,5 +671,6 @@ with col4:
     if st.button("⬇️ Exportar Word detalhado", disabled=(last_results is None)):
         docxd = export_docx_detailed(df_h, df_f, last_results, logo_bytes=logo_bytes)
         st.download_button("Baixar DOCX detalhado", docxd, "neoenergia_qa_detalhado.docx")
+
 
 
