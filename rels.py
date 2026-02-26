@@ -232,11 +232,27 @@ def format_context(results_df: pd.DataFrame, max_chars_total: int = 9000) -> str
 def openai_answer(question: str, results_df: pd.DataFrame) -> str:
     api_key = st.secrets.get("OPENAI_API_KEY", "").strip()
     if not api_key:
-        return (
-            "⚠️ **OPENAI_API_KEY não encontrado.**\n\n"
-            "No Streamlit Cloud: **Settings → Secrets** e salve:\n"
-            "OPENAI_API_KEY = \"...\""
+        return "❌ OPENAI_API_KEY não encontrada no Secrets."
+
+    context = format_context(results_df, max_chars_total=9000)
+    if not context.strip():
+        return "Nenhum contexto relevante encontrado."
+
+    client = OpenAI(api_key=api_key)
+
+    try:
+        resp = client.responses.create(
+            model=DEFAULT_MODEL,
+            input=[
+                {"role": "system", "content": "Responda usando apenas o contexto fornecido."},
+                {"role": "user", "content": f"Pergunta:\n{question}\n\nContexto:\n{context}"},
+            ],
+            temperature=0.2,
         )
+        return resp.output_text
+
+    except Exception as e:
+        return f"🔥 ERRO OPENAI: {str(e)}"
 
     context = format_context(results_df, max_chars_total=9000)
     if not context.strip():
@@ -673,4 +689,5 @@ with col4:
     if st.button("⬇️ Exportar Word detalhado", disabled=(last_results is None)):
         docxd = export_docx_detailed(df_h, df_f, last_results, logo_bytes=logo_bytes)
         st.download_button("Baixar DOCX detalhado", docxd, "neoenergia_qa_detalhado.docx")
+
 
