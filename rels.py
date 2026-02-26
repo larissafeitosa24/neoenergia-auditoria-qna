@@ -1,17 +1,11 @@
 # ===========================================================
 # Chat (OpenAI RAG)
 # ===========================================================
-import os
 from openai import OpenAI
 
-# Você pode trocar o modelo depois (ex: gpt-4.1, gpt-4o-mini etc.)
 DEFAULT_MODEL = "gpt-4.1"
 
 def format_context(results_df: pd.DataFrame, max_chars_total: int = 9000) -> str:
-    """
-    Monta o contexto com trechos do corpus (HEAD + FIND), com tags para rastreabilidade.
-    Limita tamanho total para não estourar tokens.
-    """
     parts = []
     total = 0
     for _, r in results_df.iterrows():
@@ -25,16 +19,9 @@ def format_context(results_df: pd.DataFrame, max_chars_total: int = 9000) -> str
     return "\n---\n".join(parts)
 
 def openai_answer(question: str, results_df: pd.DataFrame) -> str:
-    """
-    Faz a resposta LLM baseada SOMENTE nos trechos retornados.
-    """
-    api_key = os.getenv("OPENAI_API_KEY", "").strip()
+    api_key = st.secrets.get("OPENAI_API_KEY", "").strip()
     if not api_key:
-        return (
-            "⚠️ **OPENAI_API_KEY não encontrado.**\n\n"
-            "Defina a variável de ambiente `OPENAI_API_KEY` e reinicie o app.\n"
-            "Ex.: `export OPENAI_API_KEY=\"...\"` (mac/linux) ou `setx OPENAI_API_KEY \"...\"` (windows)."
-        )
+        return "⚠️ **OPENAI_API_KEY não encontrado no Secrets do Streamlit Cloud.**"
 
     client = OpenAI(api_key=api_key)
 
@@ -52,7 +39,6 @@ def openai_answer(question: str, results_df: pd.DataFrame) -> str:
         f"CONTEXTO (trechos dos CSVs do GitHub, já filtrados):\n{context}"
     )
 
-    # store=False evita persistir o Response no dashboard (quando disponível) :contentReference[oaicite:4]{index=4}
     resp = client.responses.create(
         model=DEFAULT_MODEL,
         input=[
@@ -63,8 +49,7 @@ def openai_answer(question: str, results_df: pd.DataFrame) -> str:
         store=False,
     )
 
-    # SDK agrega texto em output_text :contentReference[oaicite:5]{index=5}
-    return resp.output_text.strip() if getattr(resp, "output_text", None) else str(resp)
+    return (resp.output_text or "").strip()
 
 st.subheader("💬 Pergunte sobre os relatórios (OpenAI)")
 show_sources = st.checkbox("Mostrar fontes (trechos)", value=False)
@@ -75,10 +60,7 @@ if "history" not in st.session_state:
 q = st.chat_input("Digite sua pergunta...")
 
 if q:
-    # 1) Recupera trechos mais relevantes DO SEU corpus filtrado
     results = search_tf(q, filtered_corpus, top_k=12)
-
-    # 2) LLM responde baseado nesses trechos
     answer = openai_answer(q, results)
 
     st.session_state["history"].append(("user", q))
