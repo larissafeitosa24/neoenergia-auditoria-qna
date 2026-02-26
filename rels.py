@@ -1,8 +1,10 @@
 # ===========================================================
 # Chat (OpenAI RAG)
 # ===========================================================
-from openai import OpenAI
+import streamlit as st
 import pandas as pd
+from openai import OpenAI
+
 
 DEFAULT_MODEL = "gpt-4.1"
 
@@ -80,4 +82,5 @@ for msg in st.session_state["history"]:
                     tag = f"[{r['source_type']} | {r['aud_code']} – {r['finding_id']}]"
                     html = f"<div class='source'><b>{tag}</b><br>{str(r['text'])[:500]}...</div>"
                     st.markdown(html, unsafe_allow_html=True)
+
 
